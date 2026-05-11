@@ -21,40 +21,15 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      changefreq: 'weekly',
-      lastmod: new Date(),
+      // @astrojs/sitemap@3.2 has a known bug where a custom `serialize` callback
+      // crashes when combined with top-level `lastmod`/`changefreq` (reduce on
+      // undefined). Keep the config minimal — Google ignores `priority` and
+      // `changefreq` in practice anyway.
       filter: (page) =>
         !page.includes('/draft/') &&
         !page.includes('/_theme-preview') &&
         !page.endsWith('/thanks/') &&
         !page.endsWith('/404/'),
-      serialize: (item) => {
-        const path = new URL(item.url).pathname;
-        // Homepage = top priority, weekly
-        if (path === '/') {
-          item.priority = 1.0;
-          item.changefreq = 'weekly';
-        }
-        // Main conversion page
-        else if (path === '/rent-a-pole/') {
-          item.priority = 0.95;
-          item.changefreq = 'weekly';
-        }
-        // Trust + contact pages
-        else if (path === '/contact/' || path === '/testimonials/') {
-          item.priority = 0.85;
-          item.changefreq = 'monthly';
-        }
-        // Reference pages
-        else if (path === '/faqs/' || path === '/view-photos/') {
-          item.priority = 0.75;
-          item.changefreq = 'monthly';
-        } else {
-          item.priority = 0.5;
-          item.changefreq = 'monthly';
-        }
-        return item;
-      },
     }),
     compress({
       HTML: true,
