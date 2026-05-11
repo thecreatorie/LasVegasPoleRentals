@@ -1,0 +1,117 @@
+---
+import '@fontsource/domine/400.css';
+import '@fontsource/domine/700.css';
+import '@fontsource-variable/open-sans/index.css';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/typography.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StickyPhoneCTA from '../components/StickyPhoneCTA.astro';
+import NeonScrollProgress from '../components/NeonScrollProgress.astro';
+import SchemaJsonLd from '../components/SchemaJsonLd.astro';
+import { siteConfig } from '../site.config';
+
+export interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  publishDate?: Date;
+  updatedDate?: Date;
+  schema?: object | object[];
+  /** Hides the sticky phone CTA on pages where the user is mid-conversion (contact form). */
+  hideStickyCta?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical = Astro.url.href,
+  ogImage = '/og-image.png',
+  ogType = 'website',
+  noindex = false,
+  schema,
+  hideStickyCta = false,
+} = Astro.props;
+
+const siteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': `${siteConfig.url}#business`,
+  name: siteConfig.name,
+  url: siteConfig.url,
+  telephone: siteConfig.phone,
+  email: siteConfig.email,
+  description: siteConfig.description,
+  image: `${siteConfig.url}/og-image.png`,
+  areaServed: siteConfig.areaServed,
+  priceRange: '$$',
+  sameAs: siteConfig.socials.map((s) => s.url),
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0a0f" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(ogImage, Astro.url).toString()} />
+    <meta property="og:site_name" content={siteConfig.name} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, Astro.url).toString()} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <SchemaJsonLd schema={siteSchema} />
+    {schema && <SchemaJsonLd schema={schema} />}
+
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <NeonScrollProgress />
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    {!hideStickyCta && <StickyPhoneCTA />}
+
+    <script>
+      // Reveal-on-scroll: any element with [data-reveal] fades + slides up when
+      // 15% in viewport. Once-only. Honors prefers-reduced-motion via CSS.
+      const reveal = (entries: IntersectionObserverEntry[], obs: IntersectionObserver) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            // Stagger children
+            const kids = e.target.querySelectorAll<HTMLElement>('[data-reveal-stagger] > *, [data-reveal] > [data-reveal-child]');
+            kids.forEach((k, i) => k.style.setProperty('--stagger-index', String(i)));
+            obs.unobserve(e.target);
+          }
+        }
+      };
+      const obs = new IntersectionObserver(reveal, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+      document.querySelectorAll('[data-reveal], [data-reveal-stagger]').forEach((el) => obs.observe(el));
+    </script>
+  </body>
+</html>

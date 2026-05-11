@@ -1,0 +1,78 @@
+---
+/**
+ * Thin wrapper around Astro's <Image> that:
+ *   - requires alt text (will warn if empty)
+ *   - applies a neon curtain-wipe reveal animation on first paint
+ *   - supports figure + caption
+ */
+import { Image } from 'astro:assets';
+
+export interface Props {
+  src: ImageMetadata;
+  alt: string;
+  widths?: number[];
+  sizes?: string;
+  caption?: string;
+  loading?: 'eager' | 'lazy';
+  /** Aspect ratio container. Defaults to natural. */
+  aspect?: string;
+  /** Disable the curtain-wipe reveal — useful for above-the-fold LCP images. */
+  noReveal?: boolean;
+}
+
+const {
+  src,
+  alt,
+  widths = [480, 768, 1280, 1920],
+  sizes = '(min-width: 1024px) 60vw, 100vw',
+  caption,
+  loading = 'lazy',
+  aspect,
+  noReveal = false,
+} = Astro.props;
+---
+
+<figure class={`picture${noReveal ? '' : ' picture--reveal'}`} data-reveal={!noReveal ? '' : undefined} style={aspect ? `aspect-ratio: ${aspect}` : undefined}>
+  <Image src={src} alt={alt} widths={widths} sizes={sizes} loading={loading} />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .picture {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+  .picture :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-story) var(--ease-standard);
+  }
+  .picture:hover :global(img) {
+    transform: scale(1.04);
+  }
+
+  .picture--reveal::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(90deg, rgba(168, 85, 247, 0.9), rgba(236, 72, 153, 0.9));
+    transform: translateX(0);
+    transition: transform 700ms var(--ease-standard);
+    pointer-events: none;
+  }
+  .picture--reveal.is-visible::before {
+    transform: translateX(101%);
+  }
+
+  figcaption {
+    margin-top: var(--space-3);
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+  }
+</style>

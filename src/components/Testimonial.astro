@@ -1,0 +1,97 @@
+---
+export interface Props {
+  quote: string;
+  name: string;
+  location?: string;
+  rating?: number;
+}
+const { quote, name, location, rating = 5 } = Astro.props;
+---
+
+<figure class="testimonial">
+  <div class="testimonial__rating" aria-label={`${rating} out of 5 stars`}>
+    {Array.from({ length: rating }).map(() => (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+      </svg>
+    ))}
+  </div>
+  <blockquote class="testimonial__quote">{quote}</blockquote>
+  <figcaption class="testimonial__cite">
+    <strong>{name}</strong>
+    {location && <span class="testimonial__loc">{location}</span>}
+  </figcaption>
+</figure>
+
+<style>
+  .testimonial {
+    position: relative;
+    margin: 0;
+    padding: var(--space-8) var(--space-6);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    height: 100%;
+    transition: transform var(--duration-base) var(--ease-standard),
+                border-color var(--duration-base) var(--ease-standard),
+                box-shadow var(--duration-base) var(--ease-standard);
+  }
+  .testimonial:hover {
+    transform: translateY(-3px);
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow: var(--shadow-lg), 0 0 24px rgba(168, 85, 247, 0.18);
+  }
+  .testimonial::before {
+    content: '"';
+    position: absolute;
+    top: 8px;
+    right: 24px;
+    font-family: var(--font-display);
+    font-size: 96px;
+    line-height: 1;
+    color: var(--color-neon-purple);
+    opacity: 0.15;
+    pointer-events: none;
+  }
+
+  .testimonial__rating {
+    display: inline-flex;
+    gap: 2px;
+    color: var(--color-vegas-gold);
+  }
+  .testimonial__quote {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: var(--font-display);
+    font-size: var(--fs-lg);
+    line-height: var(--lh-snug);
+    color: var(--color-text);
+    font-style: normal;
+    border-radius: 0;
+  }
+  .testimonial__cite {
+    margin-top: auto;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .testimonial__cite strong {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-bold);
+    color: var(--color-ink);
+  }
+  .testimonial__loc {
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-widest);
+  }
+</style>

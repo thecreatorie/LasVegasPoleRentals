@@ -1,0 +1,99 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Testimonial from '../components/Testimonial.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import Button from '../components/Button.astro';
+import { siteConfig } from '../site.config';
+import { breadcrumbList } from '../lib/breadcrumbs';
+import { testimonials } from '../data/testimonials';
+
+const reviewSchema = testimonials.map((t) => ({
+  '@type': 'Review',
+  reviewRating: { '@type': 'Rating', ratingValue: String(t.rating), bestRating: '5' },
+  author: { '@type': 'Person', name: t.name },
+  reviewBody: t.quote,
+  itemReviewed: { '@type': 'LocalBusiness', name: siteConfig.name, url: siteConfig.url },
+}));
+
+const pageSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `${siteConfig.name} — Testimonials`,
+    url: `${siteConfig.url}/testimonials/`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'AggregateRating',
+    itemReviewed: { '@type': 'LocalBusiness', name: siteConfig.name, url: siteConfig.url },
+    ratingValue: '5',
+    reviewCount: String(testimonials.length),
+  },
+  ...reviewSchema.map((r) => ({ '@context': 'https://schema.org', ...r })),
+  breadcrumbList([{ name: 'Testimonials', path: '/testimonials/' }]),
+];
+---
+
+<PageLayout
+  title="Testimonials | Las Vegas Pole Rentals"
+  description="Real Las Vegas customers — anniversaries, bachelor parties, trade shows, birthdays, production shoots. See why we're #1 for pole rentals in Vegas."
+  eyebrow="Testimonials"
+  heading="Check out our reviews."
+  intro="We want to thank our loyal customers and welcome you to our fun and friendly pole rental company. Real customers. Real stays. Real reasons to rent."
+  schema={pageSchema}
+>
+  <section class="section-pad">
+    <div class="container">
+      <ul class="testimonial-grid" data-reveal-stagger>
+        {testimonials.map((t) => (
+          <li>
+            <Testimonial
+              quote={t.quote}
+              name={t.name}
+              location={t.location}
+              rating={t.rating}
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-pad" style="padding-top: 0;">
+    <div class="container reviews-cta">
+      <h2 class="text-gradient">Ready to write your own review?</h2>
+      <p>Book a pole with us and tell us how it went. Same-day service available.</p>
+      <div class="reviews-cta__buttons">
+        <Button href="/rent-a-pole/" variant="primary" size="lg">Book a Pole</Button>
+        <Button href={siteConfig.phoneHref} variant="secondary" size="lg">Call {siteConfig.phoneDisplay}</Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .testimonial-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+  @media (min-width: 768px) { .testimonial-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .testimonial-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .reviews-cta { text-align: center; max-width: 640px; }
+  .reviews-cta h2 { margin: 0; }
+  .reviews-cta p {
+    margin: var(--space-5) 0 var(--space-8);
+    font-size: var(--fs-xl);
+    color: var(--color-text-muted);
+  }
+  .reviews-cta__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+  }
+</style>

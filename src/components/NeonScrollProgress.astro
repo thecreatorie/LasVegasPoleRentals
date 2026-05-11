@@ -1,0 +1,70 @@
+---
+/**
+ * Thin 2px gradient progress bar pinned to the top of the page that tracks
+ * page scroll. Pure CSS via scroll-driven animations where supported, with a
+ * JS fallback for browsers that don't support animation-timeline yet.
+ */
+---
+
+<div class="scroll-progress" aria-hidden="true">
+  <span class="scroll-progress__bar" id="scroll-progress-bar"></span>
+</div>
+
+<style>
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 60;
+    background: transparent;
+    pointer-events: none;
+  }
+  .scroll-progress__bar {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: var(--gradient-neon-sweep);
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.55);
+    transition: width 60ms linear;
+  }
+
+  /* Modern browsers: use scroll-driven animations and skip the JS. */
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress__bar {
+      width: 100%;
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+      animation: progress linear forwards;
+      animation-timeline: scroll();
+      transition: none;
+    }
+    @keyframes progress {
+      to { transform: scaleX(1); }
+    }
+  }
+</style>
+
+<script>
+  // JS fallback for browsers without scroll-driven animations.
+  const supported = CSS.supports('animation-timeline: scroll()');
+  if (!supported) {
+    const bar = document.getElementById('scroll-progress-bar');
+    if (bar) {
+      let raf: number | null = null;
+      const onScroll = () => {
+        if (raf !== null) return;
+        raf = requestAnimationFrame(() => {
+          const max = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+          bar.style.width = `${pct}%`;
+          raf = null;
+        });
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+    }
+  }
+</script>

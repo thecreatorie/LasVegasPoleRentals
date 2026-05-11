@@ -1,0 +1,65 @@
+---
+export interface Props {
+  url: string;
+  variant?: 'inline' | 'popup';
+  popupLabel?: string;
+  height?: string;
+}
+
+const { url, variant = 'inline', popupLabel = 'Book a time', height = '700px' } = Astro.props;
+const isCalendly = url.includes('calendly.com');
+---
+
+{variant === 'inline' ? (
+  <div class="booking-inline" style={`min-height:${height}`}>
+    <iframe
+      src={url}
+      title="Booking calendar"
+      width="100%"
+      height={height}
+      frameborder="0"
+      loading="lazy"
+      sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+    ></iframe>
+  </div>
+) : (
+  <button
+    type="button"
+    class="booking-popup-trigger"
+    data-booking-url={url}
+    data-provider={isCalendly ? 'calendly' : 'iframe'}
+  >
+    {popupLabel}
+  </button>
+)}
+
+<style>
+  .booking-inline {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--color-border-subtle);
+  }
+  .booking-popup-trigger {
+    background: var(--gradient-button);
+    color: #fff;
+    font: inherit;
+    font-weight: var(--fw-bold);
+    border: 0;
+    padding: var(--space-4) var(--space-8);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    box-shadow: var(--glow-purple);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.booking-popup-trigger').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const url = btn.dataset.bookingUrl;
+      if (!url) return;
+      window.open(url, '_blank', 'noopener,noreferrer');
+    });
+  });
+</script>

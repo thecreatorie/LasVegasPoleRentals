@@ -1,0 +1,137 @@
+---
+export interface Props {
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  /** primary = gradient with neon glow · secondary = outlined cyan · ghost = text-only · gold = celebratory */
+  variant?: 'primary' | 'secondary' | 'ghost' | 'gold';
+  size?: 'md' | 'lg' | 'xl';
+  fullWidth?: boolean;
+  ariaLabel?: string;
+  external?: boolean;
+}
+
+const {
+  href,
+  type = 'button',
+  variant = 'primary',
+  size = 'md',
+  fullWidth = false,
+  ariaLabel,
+  external = false,
+} = Astro.props;
+
+const classes = ['btn', `btn--${variant}`, `btn--${size}`, fullWidth && 'btn--full'].filter(Boolean).join(' ');
+const isLink = !!href;
+---
+
+{isLink ? (
+  <a
+    href={href}
+    class={classes}
+    aria-label={ariaLabel}
+    target={external ? '_blank' : undefined}
+    rel={external ? 'noopener noreferrer' : undefined}
+  >
+    <span class="btn__label"><slot /></span>
+    {variant === 'primary' && <span class="btn__glow" aria-hidden="true"></span>}
+  </a>
+) : (
+  <button type={type} class={classes} aria-label={ariaLabel}>
+    <span class="btn__label"><slot /></span>
+    {variant === 'primary' && <span class="btn__glow" aria-hidden="true"></span>}
+  </button>
+)}
+
+<style>
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-full);
+    font: inherit;
+    font-family: var(--font-body);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-decoration: none;
+    background: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    min-height: 44px;
+    min-width: 44px;
+    overflow: hidden;
+    isolation: isolate;
+    transition: transform var(--duration-fast) var(--ease-spring),
+                box-shadow var(--duration-fast) var(--ease-standard),
+                color var(--duration-fast) var(--ease-standard),
+                border-color var(--duration-fast) var(--ease-standard);
+  }
+  .btn__label { position: relative; z-index: 2; }
+  .btn:hover { transform: translateY(-1px) scale(1.02); }
+  .btn:active { transform: translateY(0) scale(0.98); }
+
+  .btn--md { font-size: var(--fs-base); padding: var(--space-3) var(--space-6); }
+  .btn--lg { font-size: var(--fs-lg);  padding: var(--space-4) var(--space-8); }
+  .btn--xl { font-size: var(--fs-xl);  padding: var(--space-5) var(--space-10); }
+
+  .btn--primary {
+    color: #fff;
+    background: var(--gradient-button);
+    box-shadow: var(--glow-purple);
+  }
+  .btn--primary .btn__glow {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--gradient-button-hover);
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+  .btn--primary:hover .btn__glow,
+  .btn--primary:focus-visible .btn__glow { opacity: 1; }
+
+  .btn--secondary {
+    color: var(--color-neon-cyan);
+    border-color: var(--color-neon-cyan);
+    background: transparent;
+  }
+  .btn--secondary:hover,
+  .btn--secondary:focus-visible {
+    background: rgba(34, 211, 238, 0.1);
+    box-shadow: var(--glow-cyan);
+    color: var(--color-ink);
+  }
+
+  .btn--ghost {
+    color: var(--color-text);
+    background: transparent;
+  }
+  .btn--ghost::after {
+    content: '';
+    position: absolute;
+    left: var(--space-6);
+    right: var(--space-6);
+    bottom: var(--space-2);
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--duration-base) var(--ease-standard);
+  }
+  .btn--ghost:hover::after,
+  .btn--ghost:focus-visible::after { transform: scaleX(1); }
+
+  .btn--gold {
+    color: #1c1410;
+    background: var(--color-vegas-gold);
+    box-shadow: var(--glow-gold);
+  }
+  .btn--gold:hover,
+  .btn--gold:focus-visible {
+    background: #fde047;
+  }
+
+  .btn--full { width: 100%; }
+</style>

@@ -1,0 +1,25 @@
+/* TEAM */
+
+Owner: Fawnia Mondey
+       Pole industry since 1994 · serving Las Vegas since 2005
+Site:  https://lasvegaspolerentals.com
+Phone: 702-205-1440
+
+/* PARENT */
+
+Pole Fitness Studio — the original pole dancing school in Las Vegas
+Site: https://www.polefitnessstudio.com
+
+/* SITE */
+
+Last update: 2026/05
+Standards:   HTML5, CSS3, JSON-LD, schema.org
+Stack:       Astro 4 · TypeScript · Self-hosted Domine + Open Sans · Sharp images
+Hosting:     GitHub Pages
+Migrated from WordPress (termico theme + Elementor) using
+the site-transfer Cowork plugin.
+
+/* THANKS */
+
+To the customers who keep us in business — anniversaries, birthdays,
+bachelor parties, trade shows, photo shoots, every kind of Las Vegas night.

@@ -1,0 +1,138 @@
+---
+import Nav from './Nav.astro';
+import MobileNav from './MobileNav.astro';
+import { siteConfig } from '../site.config';
+---
+
+<header class="site-header" data-shrink-on-scroll>
+  <div class="container">
+    <a href="/" class="logo" aria-label={`${siteConfig.name} — home`}>
+      <span class="chasing-lights" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+      </span>
+      <span class="wordmark">LVPR</span>
+    </a>
+    <Nav />
+    <a class="header-cta" href={siteConfig.phoneHref} aria-label={`Call ${siteConfig.phoneDisplay}`}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"/>
+      </svg>
+      <span>{siteConfig.phoneDisplay}</span>
+    </a>
+    <MobileNav />
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: transparent;
+    transition: background var(--duration-base) var(--ease-standard),
+                backdrop-filter var(--duration-base) var(--ease-standard),
+                border-color var(--duration-base) var(--ease-standard);
+    border-bottom: 1px solid transparent;
+  }
+  .site-header.is-scrolled {
+    background: color-mix(in oklab, var(--color-bg) 78%, transparent);
+    backdrop-filter: saturate(180%) blur(16px);
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    border-bottom-color: var(--color-border-subtle);
+  }
+
+  .site-header > .container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    min-height: 80px;
+    padding-block: var(--space-3);
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--color-ink);
+    text-decoration: none;
+    background: none;
+    margin-right: auto;
+  }
+  .logo:hover .wordmark,
+  .logo:focus-visible .wordmark {
+    text-shadow: var(--glow-purple);
+  }
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.18em;
+    line-height: 1;
+    transition: text-shadow var(--duration-base) var(--ease-standard);
+  }
+
+  /* Chasing marquee lights — six dots clockwise around the wordmark */
+  .chasing-lights {
+    position: relative;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+  }
+  .chasing-lights span {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 9999px;
+    background: var(--color-neon-purple);
+    opacity: 0.25;
+    box-shadow: var(--glow-purple);
+    animation: chase 1.6s linear infinite;
+  }
+  .chasing-lights span:nth-child(1) { top: 0;       left: 50%;  transform: translateX(-50%); animation-delay: 0s; }
+  .chasing-lights span:nth-child(2) { top: 25%;     right: 0;   animation-delay: 0.26s; background: var(--color-neon-magenta); box-shadow: var(--glow-magenta); }
+  .chasing-lights span:nth-child(3) { bottom: 25%;  right: 0;   animation-delay: 0.53s; }
+  .chasing-lights span:nth-child(4) { bottom: 0;    left: 50%;  transform: translateX(-50%); animation-delay: 0.8s; background: var(--color-neon-cyan); box-shadow: var(--glow-cyan); }
+  .chasing-lights span:nth-child(5) { bottom: 25%;  left: 0;    animation-delay: 1.06s; }
+  .chasing-lights span:nth-child(6) { top: 25%;     left: 0;    animation-delay: 1.33s; background: var(--color-neon-magenta); box-shadow: var(--glow-magenta); }
+  @keyframes chase {
+    0%, 70% { opacity: 0.25; }
+    30%     { opacity: 1; }
+  }
+
+  .header-cta {
+    display: none;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--gradient-button);
+    color: #fff;
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-full);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-sm);
+    text-decoration: none;
+    transition: transform var(--duration-fast) var(--ease-standard),
+                box-shadow var(--duration-fast) var(--ease-standard);
+  }
+  .header-cta:hover,
+  .header-cta:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: var(--glow-purple);
+  }
+
+  @media (min-width: 768px) {
+    .header-cta { display: inline-flex; }
+  }
+</style>
+
+<script>
+  // Toggle is-scrolled class when scroll position passes 32px
+  const h = document.querySelector<HTMLElement>('.site-header');
+  if (h) {
+    const onScroll = () => {
+      if (window.scrollY > 32) h.classList.add('is-scrolled');
+      else h.classList.remove('is-scrolled');
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>

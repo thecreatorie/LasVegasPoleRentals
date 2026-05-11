@@ -1,0 +1,136 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Button from '../components/Button.astro';
+import { Image } from 'astro:assets';
+import { siteConfig } from '../site.config';
+import { breadcrumbList } from '../lib/breadcrumbs';
+import pole1 from '../assets/images/pole1.jpg';
+import pole2 from '../assets/images/pole2.jpg';
+import pole3 from '../assets/images/pole3.jpg';
+import pole4 from '../assets/images/pole4.jpg';
+import pole5 from '../assets/images/pole5.jpg';
+import img6 from '../assets/images/img6.jpg';
+import img6082 from '../assets/images/img_6082_768x1024.jpg';
+
+// Each image carries an honest alt — descriptive of what's in frame, not stuffed with keywords.
+const photos = [
+  { src: pole1,   alt: 'Lupit pole stage with neon purple and cyan stage lighting in a low-lit venue' },
+  { src: pole2,   alt: 'Portable pole stage installed in a Las Vegas event space' },
+  { src: pole3,   alt: 'Lupit pole stage ready for a private event' },
+  { src: pole4,   alt: 'Pole stage set up in a hotel suite' },
+  { src: pole5,   alt: 'Pole rental setup for a private party' },
+  { src: img6,    alt: 'Pole stage at a Las Vegas Pole Rentals delivery' },
+  { src: img6082, alt: 'Pole stage installed for a customer' },
+];
+
+const galleryPageSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ImageGallery',
+    name: 'Las Vegas Pole Rentals — Gallery',
+    description: 'Photos of portable Lupit pole stages set up across Las Vegas venues, hotels, and private spaces.',
+    url: `${siteConfig.url}/view-photos/`,
+  },
+  breadcrumbList([{ name: 'Gallery', path: '/view-photos/' }]),
+];
+---
+
+<PageLayout
+  title="View our Gallery | Portable Stripper Pole Rentals | Las Vegas"
+  description="See our portable Lupit pole stages in real Las Vegas venues — hotel suites, event spaces, private homes. The same stage we'll bring to you."
+  eyebrow="Gallery"
+  heading="Pole stages in the wild."
+  intro="Every setup is the same equipment we'll bring to you. Hotel suites, event venues, private homes — anywhere in the Las Vegas Valley."
+  schema={galleryPageSchema}
+>
+  <section class="section-pad">
+    <div class="container">
+      <ul class="gallery" data-reveal-stagger>
+        {photos.map((p, i) => (
+          <li class={`gallery__item gallery__item--${i % 5}`}>
+            <figure>
+              <Image
+                src={p.src}
+                alt={p.alt}
+                widths={[480, 768, 1280]}
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              />
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-pad" style="padding-top: 0;">
+    <div class="container gallery-cta">
+      <h2 class="text-gradient">Want to see one in your space?</h2>
+      <p>Call or text <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a> — we'll talk through your room, your event, and the right pole for the job.</p>
+      <div class="gallery-cta__buttons">
+        <Button href="/rent-a-pole/" variant="primary" size="lg">Book a Pole</Button>
+        <Button href={siteConfig.phoneHref} variant="secondary" size="lg">Call us</Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .gallery {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 640px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .gallery { grid-template-columns: repeat(3, 1fr); } }
+
+  .gallery__item figure {
+    margin: 0;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    transition: transform var(--duration-base) var(--ease-standard),
+                box-shadow var(--duration-base) var(--ease-standard);
+  }
+  .gallery__item figure :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-slow) var(--ease-standard),
+                filter var(--duration-base) var(--ease-standard);
+    filter: saturate(1.1) contrast(1.03);
+  }
+  .gallery__item figure:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg), 0 0 32px rgba(168, 85, 247, 0.25);
+  }
+  .gallery__item figure:hover :global(img) {
+    transform: scale(1.06);
+  }
+
+  /* Vary aspect ratios for visual rhythm */
+  @media (min-width: 1024px) {
+    .gallery__item--0 figure,
+    .gallery__item--3 figure { aspect-ratio: 3 / 4; }
+    .gallery__item--1 figure { aspect-ratio: 4 / 3; }
+  }
+
+  .gallery-cta { text-align: center; max-width: 640px; }
+  .gallery-cta h2 { margin: 0; }
+  .gallery-cta p {
+    margin: var(--space-5) 0 var(--space-8);
+    font-size: var(--fs-xl);
+    color: var(--color-text-muted);
+  }
+  .gallery-cta__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+  }
+</style>

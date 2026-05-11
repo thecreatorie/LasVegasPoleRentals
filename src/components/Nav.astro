@@ -1,0 +1,64 @@
+---
+import { siteConfig } from '../site.config';
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<nav class="primary-nav" aria-label="Primary">
+  <ul>
+    {siteConfig.nav.map((item) => {
+      const cleanHref = item.href.replace(/\/$/, '') || '/';
+      const current = pathname === cleanHref || (cleanHref !== '/' && pathname.startsWith(cleanHref));
+      return (
+        <li>
+          <a href={item.href} aria-current={current ? 'page' : undefined}>{item.label}</a>
+        </li>
+      );
+    })}
+  </ul>
+</nav>
+
+<style>
+  .primary-nav { display: none; }
+
+  @media (min-width: 1024px) {
+    .primary-nav { display: block; }
+    .primary-nav ul {
+      display: flex;
+      gap: var(--space-7, 1.75rem);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .primary-nav a {
+      color: var(--color-text);
+      text-decoration: none;
+      background: none;
+      font-weight: var(--fw-medium);
+      font-size: var(--fs-base);
+      padding: var(--space-2) var(--space-1);
+      position: relative;
+      transition: color var(--duration-fast) var(--ease-standard);
+    }
+    .primary-nav a::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: var(--gradient-neon-sweep);
+      transition: width var(--duration-base) var(--ease-standard);
+    }
+    .primary-nav a:hover,
+    .primary-nav a:focus-visible,
+    .primary-nav a[aria-current='page'] {
+      color: var(--color-ink);
+    }
+    .primary-nav a:hover::after,
+    .primary-nav a:focus-visible::after,
+    .primary-nav a[aria-current='page']::after {
+      width: 100%;
+    }
+  }
+</style>

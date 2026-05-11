@@ -1,0 +1,351 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Card from '../components/Card.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import StatsBand from '../components/StatsBand.astro';
+import Marquee from '../components/Marquee.astro';
+import { siteConfig } from '../site.config';
+
+// Local images from migration
+import pole1 from '../../_migration/assets/images/Pole1_bca78de4.jpg';
+import pole2 from '../../_migration/assets/images/Pole2_c5faa7a3.jpg';
+import pole3 from '../../_migration/assets/images/Pole3_73402ba7.jpg';
+import pole4 from '../../_migration/assets/images/Pole4_07746c14.jpg';
+import pole5 from '../../_migration/assets/images/Pole5_3f20f40c.jpg';
+import { Image } from 'astro:assets';
+
+const galleryImages = [
+  { src: pole1, alt: 'Pole stage with neon purple and cyan lighting' },
+  { src: pole2, alt: 'Pole rental setup in a Las Vegas venue' },
+  { src: pole3, alt: 'Lupit pole stage in dim ambient lighting' },
+  { src: pole4, alt: 'Portable pole stage in a hotel room' },
+  { src: pole5, alt: 'Pole stage rental for an event' },
+];
+
+const palette = [
+  { name: 'Background',  hex: '#0a0a0f', token: 'color-bg' },
+  { name: 'Surface',     hex: '#14141d', token: 'color-surface' },
+  { name: 'Surface +1',  hex: '#1c1c28', token: 'color-surface-raised' },
+  { name: 'Border',      hex: '#2a2a3a', token: 'color-border' },
+  { name: 'Ink',         hex: '#fafafa', token: 'color-ink' },
+  { name: 'Text muted',  hex: '#a1a1aa', token: 'color-text-muted' },
+  { name: 'Neon purple', hex: '#a855f7', token: 'color-neon-purple' },
+  { name: 'Neon magenta',hex: '#ec4899', token: 'color-neon-magenta' },
+  { name: 'Neon cyan',   hex: '#22d3ee', token: 'color-neon-cyan' },
+  { name: 'Vegas gold',  hex: '#fbbf24', token: 'color-vegas-gold' },
+];
+
+const typeScale = [
+  { token: '--fs-hero', label: 'Hero', sample: 'Las Vegas pole rentals.' },
+  { token: '--fs-h1',   label: 'H1',   sample: 'Rent a pole today.' },
+  { token: '--fs-h2',   label: 'H2',   sample: 'We bring the stage.' },
+  { token: '--fs-h3',   label: 'H3',   sample: 'Same-day setup.' },
+  { token: '--fs-xl',   label: 'XL',   sample: 'Larger body text for emphasis.' },
+  { token: '--fs-base', label: 'Base', sample: 'Our pole dance stages and poles take approximately 10 minutes to set up.' },
+  { token: '--fs-sm',   label: 'SM',   sample: 'Smaller captions and meta information.' },
+];
+---
+
+<BaseLayout
+  title="Theme preview — LVPR"
+  description="Internal preview of the LVPR theme: tokens, components, and motion."
+  noindex={true}
+>
+  <section class="section-pad">
+    <div class="container">
+      <p class="eyebrow">Theme preview</p>
+      <h1 class="hero-title"><span class="text-gradient-hero">Las Vegas</span> pole rentals.</h1>
+      <p class="lede">Vegas-entertainment design system for {siteConfig.name}. Dark canvas, triple-neon accents, scroll-driven motion. This page renders every token, component, and animation so you can approve them before content rebuild.</p>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Color palette -->
+  <section class="section-pad" data-reveal>
+    <div class="container">
+      <SectionHeader eyebrow="01 / Colors" title="The palette" description="Dark-first canvas with three neon accents and a celebratory gold. Every text-on-surface pair passes WCAG AA." />
+      <ul class="swatches">
+        {palette.map((c) => (
+          <li class="swatch">
+            <div class="swatch__color" style={`background: ${c.hex}`}></div>
+            <div class="swatch__meta">
+              <strong>{c.name}</strong>
+              <code>{c.hex}</code>
+              <code class="swatch__token">--{c.token}</code>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div class="gradient-strip" aria-hidden="true">
+        <div style="background: var(--gradient-hero)">Hero gradient</div>
+        <div style="background: var(--gradient-neon-sweep)">Neon sweep</div>
+        <div style="background: var(--gradient-button)">Button</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Type -->
+  <section class="section-pad" data-reveal>
+    <div class="container">
+      <SectionHeader eyebrow="02 / Typography" title="Domine display, Open Sans body" description="Self-hosted via fontsource. Mobile-fluid sizes using clamp()." />
+      <div class="type-stack">
+        {typeScale.map((t) => (
+          <div class="type-row">
+            <code class="type-row__token">{t.token}</code>
+            <p class="type-row__sample" style={`font-size: var(${t.token}); font-family: var(--font-display); line-height: 1.1;`}>{t.sample}</p>
+          </div>
+        ))}
+        <div class="type-row">
+          <code class="type-row__token">--font-body</code>
+          <p class="type-row__sample type-row__sample--body">Body sentences in Open Sans. The Lupit Pole Quick Lock™ is a unique quick lock system that allows the dancer to go from spinning to standing in less than a second.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Buttons -->
+  <section class="section-pad" data-reveal>
+    <div class="container">
+      <SectionHeader eyebrow="03 / Buttons" title="Four variants × three sizes" />
+      <div class="button-grid">
+        <div class="button-cell"><Button variant="primary"   size="md">Book a Pole</Button></div>
+        <div class="button-cell"><Button variant="secondary" size="md">See pricing</Button></div>
+        <div class="button-cell"><Button variant="ghost"     size="md">Read reviews</Button></div>
+        <div class="button-cell"><Button variant="gold"      size="md">#1 in Vegas</Button></div>
+
+        <div class="button-cell"><Button variant="primary"   size="lg">Book a Pole</Button></div>
+        <div class="button-cell"><Button variant="secondary" size="lg">See pricing</Button></div>
+        <div class="button-cell"><Button variant="ghost"     size="lg">Read reviews</Button></div>
+        <div class="button-cell"><Button variant="gold"      size="lg">#1 in Vegas</Button></div>
+
+        <div class="button-cell"><Button variant="primary"   size="xl">Book a Pole</Button></div>
+        <div class="button-cell"><Button variant="secondary" size="xl">See pricing</Button></div>
+        <div class="button-cell"><Button variant="ghost"     size="xl">Read reviews</Button></div>
+        <div class="button-cell"><Button variant="gold"      size="xl">#1 in Vegas</Button></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Cards -->
+  <section class="section-pad" data-reveal>
+    <div class="container">
+      <SectionHeader eyebrow="04 / Cards" title="Default · Feature · Image" />
+      <div class="card-grid" data-reveal-stagger>
+        <Card title="Lupit Pole Quick Lock™" description="Spin to static in under a second. No allen wrenches, no screws." eyebrow="Technology" href="/rent-a-pole/" />
+        <Card title="Same-day delivery" description="Need a pole today? We deliver, set up, and pick up across Las Vegas." eyebrow="Service" variant="feature" href="/rent-a-pole/" />
+        <Card title="Hotel room ready" eyebrow="Where" variant="image" href="/view-photos/">
+          <Image slot="media" src={pole4} alt="Pole stage in a hotel room" widths={[480, 768]} sizes="400px" />
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Stats band -->
+  <StatsBand items={[...siteConfig.stats]} />
+
+  <div class="section-divider"></div>
+
+  <!-- Marquee gallery -->
+  <section class="section-pad" data-reveal>
+    <div class="container">
+      <SectionHeader eyebrow="06 / Marquee" title="Auto-scrolling photo gallery" description="Pauses on hover. Direction alternates per row." />
+    </div>
+    <Marquee speed={36} ariaLabel="Gallery row 1">
+      {galleryImages.map((img) => (
+        <figure class="marquee-photo">
+          <Image src={img.src} alt={img.alt} widths={[320, 480]} sizes="320px" />
+        </figure>
+      ))}
+    </Marquee>
+    <div style="height: var(--space-5)"></div>
+    <Marquee speed={48} reverse={true} ariaLabel="Gallery row 2">
+      {galleryImages.slice().reverse().map((img) => (
+        <figure class="marquee-photo">
+          <Image src={img.src} alt={img.alt} widths={[320, 480]} sizes="320px" />
+        </figure>
+      ))}
+    </Marquee>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Pricing -->
+  <section class="section-pad" data-reveal>
+    <div class="container">
+      <SectionHeader eyebrow="07 / Pricing card" title="Rent A Pole" align="center" />
+      <div class="pricing">
+        <Card title="24-hour rental" description="Stage and pole, setup and pickup included." eyebrow="Standard" variant="feature">
+          <p class="pricing__amount text-gradient-hero">$250</p>
+          <p class="pricing__sub">per day</p>
+          <Button href="/rent-a-pole/" variant="primary" size="lg" fullWidth>Book this</Button>
+        </Card>
+        <Card title="Additional days" description="Extend any rental at a reduced daily rate." eyebrow="Extra">
+          <p class="pricing__amount text-gradient-hero">$200</p>
+          <p class="pricing__sub">per additional day</p>
+          <Button href="/rent-a-pole/" variant="secondary" size="lg" fullWidth>Add days</Button>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Reduced motion note -->
+  <section class="section-pad">
+    <div class="container">
+      <SectionHeader eyebrow="08 / Motion" title="Honors prefers-reduced-motion" description="All scroll reveals, count-ups, marquees, parallax, and glow pulses fall back to instant or opacity-only transitions when the user has 'Reduce motion' enabled." />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lede {
+    max-width: 60ch;
+    margin: var(--space-6) 0 0;
+    font-size: var(--fs-xl);
+    color: var(--color-text-muted);
+    line-height: var(--lh-normal);
+  }
+
+  .swatches {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--space-4);
+  }
+  .swatch {
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .swatch__color { height: 80px; }
+  .swatch__meta {
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .swatch__meta strong { font-size: var(--fs-sm); }
+  .swatch__meta code { font-size: var(--fs-xs); color: var(--color-text-muted); background: none; padding: 0; border: 0; }
+  .swatch__token { color: var(--color-neon-cyan) !important; }
+
+  .gradient-strip {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+  }
+  @media (min-width: 768px) { .gradient-strip { grid-template-columns: repeat(3, 1fr); } }
+  .gradient-strip > div {
+    padding: var(--space-8);
+    border-radius: var(--radius-md);
+    color: #fff;
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--tracking-wide);
+    text-align: center;
+  }
+
+  .type-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+  .type-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    border-top: 1px solid var(--color-border-subtle);
+    padding-top: var(--space-4);
+  }
+  @media (min-width: 768px) {
+    .type-row { grid-template-columns: 140px 1fr; gap: var(--space-6); }
+  }
+  .type-row__token {
+    color: var(--color-neon-cyan);
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: var(--fs-sm);
+    align-self: start;
+  }
+  .type-row__sample { margin: 0; color: var(--color-text); }
+  .type-row__sample--body { font-family: var(--font-body); }
+
+  .button-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+  @media (min-width: 768px) { .button-grid { grid-template-columns: repeat(4, 1fr); } }
+  .button-cell {
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100px;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+  @media (min-width: 768px) { .card-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .marquee-photo {
+    width: 320px;
+    aspect-ratio: 4/3;
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--color-surface);
+  }
+  .marquee-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-base) var(--ease-standard);
+  }
+  .marquee-photo:hover :global(img) { transform: scale(1.05); }
+
+  .pricing {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+  @media (min-width: 768px) {
+    .pricing { grid-template-columns: 1fr 1fr; max-width: 720px; margin-inline: auto; }
+  }
+  .pricing__amount {
+    margin: var(--space-5) 0 0;
+    font-family: var(--font-display);
+    font-size: var(--fs-stat);
+    font-weight: var(--fw-bold);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+  .pricing__sub {
+    margin: var(--space-1) 0 var(--space-6);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-widest);
+    font-size: var(--fs-sm);
+  }
+</style>

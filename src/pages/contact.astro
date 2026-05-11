@@ -1,0 +1,171 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import ServiceArea from '../components/ServiceArea.astro';
+import { siteConfig } from '../site.config';
+import { breadcrumbList } from '../lib/breadcrumbs';
+
+// Formspree form ID — wired to the LVPR contact form.
+// AJAX submission via @formspree/ajax (loaded in ContactForm.astro). Plain-POST
+// fallback works automatically if JS is off.
+const formspreeFormId = 'xqennkbb';
+
+const contactFields = [
+  { name: 'name',        label: 'Your name',          type: 'text' as const,     required: true,  autocomplete: 'name' },
+  { name: 'phone',       label: 'Phone',              type: 'tel' as const,      required: true,  autocomplete: 'tel', placeholder: '702-555-0123' },
+  { name: 'email',       label: 'Email',              type: 'email' as const,    required: true,  autocomplete: 'email' },
+  { name: 'event_date',  label: 'Date needed',        type: 'date' as const,     required: false },
+  { name: 'location',    label: 'Hotel / venue',      type: 'text' as const,     required: false, placeholder: 'e.g. Bellagio, MGM Grand suite, private home in Henderson' },
+  { name: 'message',     label: 'Tell us about it',   type: 'textarea' as const, required: true,  placeholder: 'How many people? Ceiling height (if known)? Anything else we should plan for?' },
+];
+
+const contactSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: 'Contact Las Vegas Pole Rentals',
+    url: `${siteConfig.url}/contact/`,
+    about: { '@type': 'LocalBusiness', name: siteConfig.name, url: siteConfig.url, telephone: siteConfig.phone },
+  },
+  breadcrumbList([{ name: 'Contact', path: '/contact/' }]),
+];
+---
+
+<PageLayout
+  title="Get in Touch with LVPR | Rent a Stripper Pole in Las Vegas"
+  description="Contact LVPR — call or text 702-205-1440 for same-day pole rentals in Las Vegas. Or send a message and we'll come back within a few hours."
+  eyebrow="Contact"
+  heading="Get in touch."
+  intro="Call or text for same-day service. Or send a message — we usually come back within a few hours."
+  schema={contactSchema}
+>
+  <!-- Phone-first CTA hierarchy (replaces broken Google Map from legacy site) -->
+  <section class="contact-cta" data-reveal>
+    <div class="container">
+      <div class="contact-cta__grid">
+        <a href={siteConfig.phoneHref} class="contact-cta__card contact-cta__card--phone">
+          <p class="label">Fastest</p>
+          <p class="contact-cta__big">{siteConfig.phoneDisplay}</p>
+          <p class="contact-cta__sub">Call or text — same number, same person.</p>
+        </a>
+        <a href={siteConfig.smsHref} class="contact-cta__card">
+          <p class="label">Text directly</p>
+          <p class="contact-cta__big">Text us</p>
+          <p class="contact-cta__sub">Pre-fills a message so you can hit send.</p>
+        </a>
+        <a href={siteConfig.emailHref} class="contact-cta__card">
+          <p class="label">Email</p>
+          <p class="contact-cta__big contact-cta__big--small">{siteConfig.email}</p>
+          <p class="contact-cta__sub">For longer questions or quote requests.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form -->
+  <section class="section-pad" data-reveal>
+    <div class="container contact-form-wrap">
+      <div>
+        <p class="eyebrow">Or send a message</p>
+        <h2>Tell us what you need.</h2>
+        <p class="contact-form-wrap__sub">
+          The more you tell us up front, the faster we can confirm your booking. Ceiling height, number of guests,
+          and the venue are the most useful details.
+        </p>
+        <p class="contact-form-wrap__hint">
+          <strong>Heads up:</strong> we don't book through the form — we'll text or email you back, and the rental is
+          confirmed once we agree on the date and you're on our schedule.
+        </p>
+      </div>
+      <ContactForm
+        formId={formspreeFormId}
+        fields={contactFields}
+        submitLabel="Send to LVPR"
+        subject="New pole rental inquiry"
+      />
+    </div>
+  </section>
+
+  <!-- Service area (replaces broken London Eye Google Map) -->
+  <ServiceArea />
+</PageLayout>
+
+<style>
+  .contact-cta { padding-block: var(--space-12) var(--space-8); }
+  .contact-cta__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 768px) { .contact-cta__grid { grid-template-columns: 2fr 1fr 1fr; } }
+
+  .contact-cta__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-8);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-xl);
+    color: var(--color-text);
+    text-decoration: none;
+    background-image: none;
+    transition: transform var(--duration-base) var(--ease-standard),
+                border-color var(--duration-base) var(--ease-standard),
+                box-shadow var(--duration-base) var(--ease-standard);
+  }
+  .contact-cta__card:hover,
+  .contact-cta__card:focus-visible {
+    transform: translateY(-3px);
+    border-color: rgba(168, 85, 247, 0.5);
+    box-shadow: var(--glow-purple);
+  }
+  .contact-cta__card--phone {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(236, 72, 153, 0.12));
+    border-color: rgba(168, 85, 247, 0.5);
+  }
+  .contact-cta__big {
+    margin: var(--space-1) 0 var(--space-1);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+    font-weight: var(--fw-bold);
+    line-height: 1;
+    color: var(--color-ink);
+    letter-spacing: -0.02em;
+  }
+  .contact-cta__big--small {
+    font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    word-break: break-all;
+  }
+  .contact-cta__sub {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+  }
+
+  .contact-form-wrap {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-10);
+    align-items: start;
+  }
+  @media (min-width: 900px) { .contact-form-wrap { grid-template-columns: 1fr 1.3fr; gap: var(--space-12); } }
+
+  .contact-form-wrap h2 { margin: var(--space-2) 0 var(--space-5); }
+  .contact-form-wrap__sub {
+    color: var(--color-text-muted);
+    font-size: var(--fs-lg);
+    line-height: var(--lh-normal);
+    margin: 0 0 var(--space-6);
+  }
+  .contact-form-wrap__hint {
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-surface);
+    border-left: 3px solid var(--color-neon-cyan);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+    margin: 0;
+  }
+  .contact-form-wrap__hint strong { color: var(--color-ink); }
+</style>

@@ -1,0 +1,79 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { siteConfig } from '../site.config';
+
+export interface Props {
+  title: string;
+  description: string;
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+  schema?: object | object[];
+  canonical?: string;
+  ogImage?: string;
+  /** Hide the page hero entirely (used when the page renders its own custom hero). */
+  noPageHero?: boolean;
+}
+
+const {
+  title,
+  description,
+  eyebrow,
+  heading,
+  intro,
+  schema,
+  canonical,
+  ogImage,
+  noPageHero = false,
+} = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  schema={schema}
+  canonical={canonical}
+  ogImage={ogImage}
+>
+  {!noPageHero && heading && (
+    <header class="page-hero">
+      <div class="page-hero__spot" aria-hidden="true"></div>
+      <div class="container">
+        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+        <h1 data-reveal>{heading}</h1>
+        {intro && <p class="intro" data-reveal>{intro}</p>}
+      </div>
+    </header>
+  )}
+
+  <slot />
+</BaseLayout>
+
+<style>
+  .page-hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: var(--space-section);
+    background:
+      linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .page-hero__spot {
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-spotlight);
+    pointer-events: none;
+  }
+  .page-hero .container { position: relative; z-index: 2; }
+  .page-hero h1 {
+    margin: 0;
+    max-width: 24ch;
+  }
+  .intro {
+    margin: var(--space-6) 0 0 0;
+    max-width: 60ch;
+    font-size: var(--fs-xl);
+    color: var(--color-text-muted);
+    line-height: var(--lh-normal);
+  }
+</style>

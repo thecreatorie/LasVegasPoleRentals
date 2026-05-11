@@ -1,0 +1,229 @@
+---
+import Button from './Button.astro';
+import { siteConfig } from '../site.config';
+
+interface FieldDef {
+  name: string;
+  label: string;
+  type: 'text' | 'email' | 'tel' | 'url' | 'textarea' | 'date';
+  required?: boolean;
+  placeholder?: string;
+  autocomplete?: string;
+}
+
+export interface Props {
+  /** Formspree form ID (the bit after /f/). Defaults to the LVPR contact form. */
+  formId?: string;
+  fields: FieldDef[];
+  successRedirect?: string;
+  submitLabel?: string;
+  subject?: string;
+}
+
+const {
+  formId = 'xqennkbb',
+  fields,
+  successRedirect = '/thanks/',
+  submitLabel = 'Send inquiry',
+  subject = 'New pole rental inquiry',
+} = Astro.props;
+
+const formAction = `https://formspree.io/f/${formId}`;
+---
+
+<form
+  id="lvpr-contact"
+  method="post"
+  action={formAction}
+  class="contact-form"
+  novalidate
+>
+  <input type="hidden" name="_subject" value={subject} />
+  {/* `_next` is the no-JS fallback — Formspree redirects here on success when JS is off. */}
+  <input type="hidden" name="_next" value={`${siteConfig.url}${successRedirect}`} />
+  {/* Honeypot — humans skip, bots fill. */}
+  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="honeypot" aria-hidden="true" />
+
+  <div class="field-grid">
+    {fields.map((f) => (
+      <div class={`field${f.type === 'textarea' ? ' field--full' : ''}`}>
+        <label for={`field-${f.name}`}>
+          {f.label}{f.required ? <span aria-hidden="true"> *</span> : null}
+          {f.required && <span class="sr-only"> (required)</span>}
+        </label>
+        {f.type === 'textarea' ? (
+          <textarea
+            id={`field-${f.name}`}
+            name={f.name}
+            required={f.required}
+            placeholder={f.placeholder}
+            autocomplete={f.autocomplete}
+            rows="5"
+            data-fs-field
+          ></textarea>
+        ) : (
+          <input
+            id={`field-${f.name}`}
+            name={f.name}
+            type={f.type}
+            required={f.required}
+            placeholder={f.placeholder}
+            autocomplete={f.autocomplete}
+            data-fs-field
+          />
+        )}
+        <span class="field__error" data-fs-error={f.name}></span>
+      </div>
+    ))}
+  </div>
+
+  {/* Form-level error (network, server) */}
+  <div class="form-banner form-banner--error" data-fs-error hidden></div>
+
+  {/* Success state — shown by @formspree/ajax after a successful submission */}
+  <div class="form-banner form-banner--success" data-fs-success hidden>
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M22 11.08V12a10 10 0 11-5.93-9.14M22 4L12 14.01l-3-3"/>
+    </svg>
+    <div>
+      <strong>Got it — message received.</strong>
+      <p>We'll text or email you back within a few hours. For anything urgent right now, <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>.</p>
+    </div>
+  </div>
+
+  <Button type="submit" variant="primary" size="lg" fullWidth>
+    <span data-fs-submit-label>{submitLabel}</span>
+  </Button>
+  {/* The Button component renders a real <button> with a slot — @formspree/ajax
+      will toggle [disabled] on the nearest [data-fs-submit-btn] inside this form. */}
+</form>
+
+<style>
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 720px;
+  }
+  .field-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+  @media (min-width: 640px) {
+    .field-grid { grid-template-columns: 1fr 1fr; }
+    .field--full { grid-column: 1 / -1; }
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  label {
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+  input,
+  textarea {
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font: inherit;
+    font-family: var(--font-body);
+    background: var(--color-surface);
+    color: var(--color-text);
+    width: 100%;
+    transition: border-color var(--duration-fast) var(--ease-standard),
+                box-shadow var(--duration-fast) var(--ease-standard);
+  }
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--color-neon-purple);
+    box-shadow: var(--shadow-focus);
+  }
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  /* @formspree/ajax sets aria-invalid="true" on inputs with errors */
+  input[aria-invalid='true'],
+  textarea[aria-invalid='true'] {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 3px rgb(244 63 94 / 0.25);
+  }
+  .field__error {
+    min-height: 0;
+    font-size: var(--fs-sm);
+    color: var(--color-error);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .field__error:empty { display: none; }
+
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  /* Banners — error and success */
+  .form-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-subtle);
+  }
+  .form-banner[hidden] { display: none; }
+  .form-banner p { margin: var(--space-1) 0 0; color: var(--color-text-muted); }
+  .form-banner strong { color: var(--color-ink); }
+  .form-banner svg { flex-shrink: 0; margin-top: 2px; }
+
+  .form-banner--success {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(34, 211, 238, 0.10));
+    border-color: rgba(168, 85, 247, 0.5);
+    box-shadow: var(--glow-purple);
+    animation: success-in var(--duration-base) var(--ease-spring);
+  }
+  .form-banner--success svg { color: var(--color-neon-cyan); }
+  @keyframes success-in {
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .form-banner--error {
+    background: rgba(244, 63, 94, 0.08);
+    border-color: rgba(244, 63, 94, 0.4);
+    color: var(--color-error);
+  }
+  .form-banner--error svg { color: var(--color-error); }
+</style>
+
+{/* Tag the submit button (rendered by Button.astro) so @formspree/ajax can
+    disable it during submission. */}
+<script is:inline>
+  (function () {
+    var form = document.getElementById('lvpr-contact');
+    if (!form) return;
+    var btn = form.querySelector('button[type="submit"]');
+    if (btn) btn.setAttribute('data-fs-submit-btn', '');
+  })();
+</script>
+
+{/* Formspree AJAX initializer — loaded from CDN. If it fails to load, the
+    form still works as a plain POST and lands on /thanks/. */}
+<script is:inline>
+  window.formspree = window.formspree || function () {
+    (window.formspree.q = window.formspree.q || []).push(arguments);
+  };
+  window.formspree('initForm', { formElement: '#lvpr-contact', formId: 'xqennkbb' });
+</script>
+<script is:inline src="https://unpkg.com/@formspree/ajax@1" defer></script>

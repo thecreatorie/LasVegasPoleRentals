@@ -1,0 +1,252 @@
+---
+import { Image } from 'astro:assets';
+import Button from './Button.astro';
+import { siteConfig } from '../site.config';
+
+export interface Props {
+  eyebrow?: string;
+  title: string;
+  /** First word/phrase gets the neon gradient sweep. */
+  titleHighlight?: string;
+  subtitle?: string;
+  /** Hero image as a parallax background. */
+  image?: ImageMetadata;
+  imageAlt?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  secondaryCtaLabel?: string;
+  secondaryCtaHref?: string;
+  /** Full-viewport variant (100vh). Use on homepage only. */
+  fullBleed?: boolean;
+}
+
+const {
+  eyebrow,
+  title,
+  titleHighlight,
+  subtitle,
+  image,
+  imageAlt,
+  ctaLabel,
+  ctaHref,
+  secondaryCtaLabel,
+  secondaryCtaHref,
+  fullBleed = false,
+} = Astro.props;
+---
+
+<section class={`hero${fullBleed ? ' hero--full' : ''}`}>
+  {image && (
+    <div class="hero__media" aria-hidden="true">
+      <Image
+        src={image}
+        alt={imageAlt ?? ''}
+        widths={[768, 1280, 1920, 2400]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+  )}
+  <div class="hero__overlay" aria-hidden="true"></div>
+  <div class="hero__spot" aria-hidden="true"></div>
+  <div class="ambient-orb ambient-orb--purple" aria-hidden="true"></div>
+  <div class="ambient-orb ambient-orb--magenta" aria-hidden="true"></div>
+
+  <div class="container hero__inner">
+    {eyebrow && <p class="eyebrow hero__eyebrow">{eyebrow}</p>}
+    <h1 class="hero-title">
+      {titleHighlight && <span class="text-gradient-hero">{titleHighlight}</span>}
+      {titleHighlight ? ' ' : ''}{title}
+    </h1>
+    {subtitle && <p class="hero__sub">{subtitle}</p>}
+    {(ctaLabel || secondaryCtaLabel) && (
+      <div class="hero__ctas">
+        {ctaLabel && ctaHref && <Button href={ctaHref} variant="primary" size="lg">{ctaLabel}</Button>}
+        {secondaryCtaLabel && secondaryCtaHref && <Button href={secondaryCtaHref} variant="secondary" size="lg">{secondaryCtaLabel}</Button>}
+      </div>
+    )}
+    <a href={siteConfig.phoneHref} class="hero__phone" aria-label={`Or call ${siteConfig.phoneDisplay} now`}>
+      <span>or text/call</span>
+      <strong>{siteConfig.phoneDisplay}</strong>
+    </a>
+  </div>
+
+  {fullBleed && (
+    <a href="#below-hero" class="hero__scroll" aria-label="Scroll for more">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m0 0l-6-6m6 6l6-6"/>
+      </svg>
+    </a>
+  )}
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--color-bg);
+    padding-block: var(--space-section);
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+  .hero--full {
+    min-height: 100vh;
+    padding-block: var(--space-24) var(--space-16);
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .hero__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.08);
+    filter: saturate(1.15) contrast(1.05) brightness(0.7);
+    will-change: transform;
+    animation: hero-pan 12s ease-in-out infinite alternate;
+  }
+  @keyframes hero-pan {
+    from { transform: scale(1.08) translate3d(-1%, -1%, 0); }
+    to   { transform: scale(1.12) translate3d(1%, 1%, 0); }
+  }
+
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background:
+      linear-gradient(180deg, rgba(10, 10, 15, 0.35) 0%, rgba(10, 10, 15, 0.8) 70%, rgba(10, 10, 15, 1) 100%),
+      var(--gradient-stage-lights);
+    pointer-events: none;
+  }
+  .hero__spot {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: var(--gradient-spotlight);
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  /* Ambient drifting orbs */
+  .ambient-orb {
+    position: absolute;
+    width: 480px;
+    height: 480px;
+    border-radius: 9999px;
+    filter: blur(80px);
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.45;
+    will-change: transform;
+  }
+  .ambient-orb--purple {
+    background: var(--color-neon-purple);
+    top: -120px;
+    left: -120px;
+    animation: orb-drift 18s ease-in-out infinite alternate;
+  }
+  .ambient-orb--magenta {
+    background: var(--color-neon-magenta);
+    bottom: -160px;
+    right: -120px;
+    animation: orb-drift 22s ease-in-out infinite alternate-reverse;
+  }
+  @keyframes orb-drift {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(8%, -6%, 0); }
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: 3;
+    max-width: 900px;
+  }
+  .hero__eyebrow { color: var(--color-neon-cyan); }
+  .hero__eyebrow::before { background: var(--color-neon-cyan); }
+
+  .hero__sub {
+    margin: var(--space-6) 0 var(--space-8);
+    font-size: var(--fs-xl);
+    color: var(--color-text-muted);
+    max-width: 56ch;
+    line-height: var(--lh-normal);
+  }
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .hero__phone {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    background: none;
+    font-size: var(--fs-sm);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-widest);
+  }
+  .hero__phone strong {
+    font-family: var(--font-display);
+    font-size: var(--fs-3xl);
+    color: var(--color-ink);
+    text-transform: none;
+    letter-spacing: 0;
+    transition: text-shadow var(--duration-base) var(--ease-standard);
+  }
+  .hero__phone:hover strong,
+  .hero__phone:focus-visible strong { text-shadow: var(--glow-cyan); color: var(--color-neon-cyan); }
+
+  .hero__scroll {
+    position: absolute;
+    left: 50%;
+    bottom: var(--space-6);
+    transform: translateX(-50%);
+    z-index: 3;
+    color: var(--color-text-muted);
+    background: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    animation: scroll-bob 2s ease-in-out infinite;
+  }
+  .hero__scroll:hover { color: var(--color-ink); }
+  @keyframes scroll-bob {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(6px); }
+  }
+</style>
+
+<script>
+  // Subtle parallax: shift hero image translateY based on scroll progress.
+  // GPU-only transform; throttled via requestAnimationFrame.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion) {
+    const img = document.querySelector<HTMLImageElement>('.hero__media img');
+    if (img) {
+      let raf: number | null = null;
+      const onScroll = () => {
+        if (raf !== null) return;
+        raf = requestAnimationFrame(() => {
+          const y = Math.min(window.scrollY, window.innerHeight) * 0.25;
+          img.style.transform = `scale(1.12) translate3d(0, -${y}px, 0)`;
+          raf = null;
+        });
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+  }
+</script>

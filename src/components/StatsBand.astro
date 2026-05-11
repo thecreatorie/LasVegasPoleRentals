@@ -1,0 +1,138 @@
+---
+/**
+ * Horizontal band of giant stat counters with neon-gradient numbers.
+ * Numbers count up on scroll-in (or appear instantly under reduced motion).
+ */
+export interface Props {
+  items: Array<{ value: number; prefix?: string; suffix?: string; label: string }>;
+}
+const { items } = Astro.props;
+---
+
+<section class="stats-band" data-reveal>
+  <div class="container-wide">
+    <ul class="stats" data-reveal-stagger>
+      {items.map((item) => (
+        <li>
+          <div class="stat">
+            <span class="stat__number text-gradient">
+              {item.prefix && <span class="stat__affix">{item.prefix}</span>}
+              <span
+                class="stat__count"
+                data-count-target={item.value}
+                data-count-prefix={item.prefix ?? ''}
+                data-count-suffix={item.suffix ?? ''}
+              >0</span>
+              {item.suffix && <span class="stat__affix">{item.suffix}</span>}
+            </span>
+            <p class="stat__label">{item.label}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .stats-band {
+    position: relative;
+    padding-block: var(--space-section);
+    background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 50%, var(--color-bg) 100%);
+    border-block: 1px solid var(--color-border-subtle);
+    overflow: hidden;
+  }
+  .stats-band::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient-neon-sweep);
+  }
+  .stats-band::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient-neon-sweep);
+  }
+
+  .stats {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+  @media (min-width: 640px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1024px) {
+    .stats { grid-template-columns: repeat(4, 1fr); gap: var(--space-8); }
+  }
+
+  .stat {
+    text-align: center;
+  }
+  .stat__number {
+    font-family: var(--font-display);
+    font-size: var(--fs-stat);
+    font-weight: var(--fw-bold);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    display: inline-flex;
+    align-items: baseline;
+  }
+  .stat__affix {
+    /* Affixes (prefix '#', suffix '+', etc.) carry the same gradient */
+    background: inherit;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  .stat__label {
+    margin: var(--space-3) 0 0 0;
+    font-size: var(--fs-sm);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-widest);
+    color: var(--color-text-muted);
+  }
+</style>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const animate = (el: HTMLElement) => {
+    const target = Number(el.dataset.countTarget || '0');
+    if (reduceMotion) {
+      el.textContent = String(target);
+      return;
+    }
+    const duration = 1000;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3); // cubic ease-out
+      el.textContent = String(Math.round(target * eased));
+      if (t < 1) requestAnimationFrame(tick);
+      else el.textContent = String(target);
+    };
+    requestAnimationFrame(tick);
+  };
+
+  const obs = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          animate(e.target as HTMLElement);
+          obs.unobserve(e.target);
+        }
+      }
+    },
+    { threshold: 0.5 }
+  );
+  document.querySelectorAll<HTMLElement>('[data-count-target]').forEach((el) => obs.observe(el));
+</script>

@@ -1,0 +1,130 @@
+---
+/**
+ * Bottom-screen sticky CTA that slides in after the user scrolls past the
+ * hero. Phone number + Book a Pole. Hidden on /contact/ via BaseLayout prop.
+ */
+import { siteConfig } from '../site.config';
+---
+
+<aside class="sticky-cta" id="sticky-cta" aria-label="Quick contact">
+  <div class="sticky-cta__inner">
+    <a href={siteConfig.phoneHref} class="sticky-cta__phone" aria-label={`Call ${siteConfig.phoneDisplay}`}>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"/>
+      </svg>
+      <span class="sticky-cta__phone-label">
+        <span class="sticky-cta__lead">Call or text</span>
+        <strong>{siteConfig.phoneDisplay}</strong>
+      </span>
+    </a>
+    <a href="/rent-a-pole/" class="sticky-cta__book">Book a Pole</a>
+  </div>
+</aside>
+
+<style>
+  .sticky-cta {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 45;
+    transform: translateY(110%);
+    transition: transform var(--duration-base) var(--ease-spring);
+    pointer-events: none;
+  }
+  .sticky-cta.is-visible {
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .sticky-cta__inner {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    margin: 0 auto;
+    max-width: 640px;
+    background: color-mix(in oklab, var(--color-surface-raised) 92%, transparent);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-xl), var(--glow-purple);
+    margin-block: 0 var(--space-4);
+    margin-inline: var(--space-4);
+  }
+  @media (min-width: 640px) {
+    .sticky-cta__inner { margin-inline: auto; }
+  }
+
+  .sticky-cta__phone {
+    flex: 1 1 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    color: var(--color-ink);
+    text-decoration: none;
+    background: none;
+    border-radius: var(--radius-full);
+    min-height: 44px;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+  .sticky-cta__phone:hover,
+  .sticky-cta__phone:focus-visible {
+    color: var(--color-neon-cyan);
+  }
+  .sticky-cta__phone svg {
+    flex-shrink: 0;
+    color: var(--color-neon-cyan);
+  }
+  .sticky-cta__phone-label {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+  .sticky-cta__lead {
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-widest);
+    color: var(--color-text-muted);
+  }
+  .sticky-cta__phone strong {
+    font-family: var(--font-display);
+    font-size: var(--fs-base);
+    font-weight: var(--fw-bold);
+  }
+
+  .sticky-cta__book {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-3) var(--space-5);
+    background: var(--gradient-button);
+    color: #fff;
+    text-decoration: none;
+    background-image: var(--gradient-button);
+    border-radius: var(--radius-full);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-sm);
+    letter-spacing: var(--tracking-wide);
+    min-height: 44px;
+    transition: transform var(--duration-fast) var(--ease-spring),
+                box-shadow var(--duration-fast) var(--ease-standard);
+  }
+  .sticky-cta__book:hover,
+  .sticky-cta__book:focus-visible {
+    transform: scale(1.04);
+    box-shadow: var(--glow-purple);
+  }
+</style>
+
+<script>
+  const cta = document.getElementById('sticky-cta');
+  if (cta) {
+    const onScroll = () => {
+      const threshold = window.innerHeight * 0.6;
+      if (window.scrollY > threshold) cta.classList.add('is-visible');
+      else cta.classList.remove('is-visible');
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>

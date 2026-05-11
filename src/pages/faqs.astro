@@ -1,0 +1,63 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import Button from '../components/Button.astro';
+import { siteConfig } from '../site.config';
+import { breadcrumbList } from '../lib/breadcrumbs';
+import { faqs } from '../data/faqs';
+
+const faqSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  breadcrumbList([{ name: 'FAQs', path: '/faqs/' }]),
+];
+---
+
+<PageLayout
+  title="Questions about pole rentals from LVPR | Las Vegas Pole Rentals"
+  description="Still have questions? We have answers. Weight limits, hotel delivery, pole specs, payment, same-day rentals — the most common questions about our Las Vegas pole rental service."
+  eyebrow="FAQs"
+  heading="Frequently asked questions."
+  intro="Most of what people want to know before they book — pole specs, hotel delivery, payment, same-day rentals. If we missed one, call us."
+  schema={faqSchema}
+>
+  <section class="section-pad">
+    <div class="container">
+      <FAQ items={[...faqs]} defaultOpen={true} />
+    </div>
+  </section>
+
+  <section class="section-pad" style="padding-top: 0;">
+    <div class="container faq-cta">
+      <h2 class="text-gradient">Didn't see your question?</h2>
+      <p>Call or text us — we're fast on the phone and we know our equipment.</p>
+      <div class="faq-cta__buttons">
+        <Button href={siteConfig.phoneHref} variant="primary" size="lg">Call {siteConfig.phoneDisplay}</Button>
+        <Button href="/contact/" variant="secondary" size="lg">Send a message</Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .faq-cta { text-align: center; max-width: 640px; }
+  .faq-cta h2 { margin: 0; }
+  .faq-cta p {
+    margin: var(--space-5) 0 var(--space-8);
+    font-size: var(--fs-xl);
+    color: var(--color-text-muted);
+  }
+  .faq-cta__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+  }
+</style>

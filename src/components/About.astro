@@ -1,0 +1,113 @@
+---
+/**
+ * About-strip used on the homepage. Two-column: text on left, image on right.
+ * Image uses the curtain-wipe reveal from the design system.
+ */
+import { Image } from 'astro:assets';
+import Button from './Button.astro';
+import { siteConfig } from '../site.config';
+import pole from '../assets/images/pole2.jpg';
+---
+
+<section class="about" data-reveal>
+  <div class="container">
+    <div class="about__grid">
+      <div class="about__copy">
+        <p class="eyebrow">About LVPR</p>
+        <h2>#1 in Las Vegas for <span class="text-gradient">dance pole rentals.</span></h2>
+        <p>
+          With over <strong>30 years of experience</strong> at Pole Fitness Studio, we've
+          turned decades of expertise into the simplest pole rental process in the city.
+          Best rates. Best product. Best service. We bring the stage to you.
+        </p>
+        <p>
+          Need a pole today? <strong>Same-day service</strong> — professional setup, professional
+          teardown, insurance included. We use <strong>Lupit Poles</strong>, the gold standard:
+          spin to static in under a second, no allen wrenches, no screws.
+        </p>
+        <p class="about__pricing">
+          <span>Rates start at</span>
+          <strong class="text-gradient-hero">$250</strong>
+          <span>for 24 hours.</span>
+        </p>
+        <div class="about__ctas">
+          <Button href="/rent-a-pole/" variant="primary" size="lg">Book a Pole</Button>
+          <Button href={siteConfig.phoneHref} variant="secondary" size="lg">Call {siteConfig.phoneDisplay}</Button>
+        </div>
+        <p class="about__owner">
+          Owned by <a href={siteConfig.parentBrand.url} target="_blank" rel="noopener noreferrer">{siteConfig.parentBrand.name}</a> · Founder Fawnia Mondey, in the pole industry since 1994.
+        </p>
+      </div>
+      <figure class="about__media picture--reveal" data-reveal>
+        <Image
+          src={pole}
+          alt="Lupit pole stage set up at a Las Vegas venue with neon ambient lighting"
+          widths={[480, 768, 1024]}
+          sizes="(min-width: 900px) 50vw, 100vw"
+        />
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about { padding-block: var(--space-section); position: relative; }
+  .about__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .about__grid { grid-template-columns: 1fr 1fr; gap: var(--space-16); }
+  }
+  .about__copy h2 { margin: var(--space-2) 0 var(--space-6); }
+  .about__copy p {
+    color: var(--color-text-muted);
+    font-size: var(--fs-lg);
+    line-height: var(--lh-normal);
+  }
+  .about__copy p strong { color: var(--color-ink); font-weight: var(--fw-semibold); }
+
+  .about__pricing {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+    font-size: var(--fs-lg);
+    color: var(--color-text-muted);
+  }
+  .about__pricing strong {
+    font-family: var(--font-display);
+    font-size: var(--fs-stat);
+    line-height: 0.9;
+    margin: 0 var(--space-1);
+  }
+
+  .about__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+  }
+  .about__owner {
+    margin-top: var(--space-6);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+  .about__owner a { font-weight: var(--fw-semibold); }
+
+  .about__media {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 4/5;
+    background: var(--color-surface);
+    position: relative;
+  }
+  .about__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>

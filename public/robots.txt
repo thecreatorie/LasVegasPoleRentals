@@ -1,0 +1,50 @@
+# robots.txt — Las Vegas Pole Rentals
+# https://lasvegaspolerentals.com
+
+# Default: search engines and well-behaved crawlers allowed everywhere.
+User-agent: *
+Allow: /
+Disallow: /thanks/
+Disallow: /_theme-preview/
+Disallow: /draft/
+
+# Explicit AI crawlers — site is opted IN to discovery and grounding.
+# (If you ever want to opt out of any of these, change Allow: / to Disallow: /)
+
+User-agent: GPTBot
+Allow: /
+Disallow: /thanks/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /thanks/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /thanks/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /thanks/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /thanks/
+
+User-agent: GoogleOther
+Allow: /
+Disallow: /thanks/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /thanks/
+
+User-agent: CCBot
+Allow: /
+Disallow: /thanks/
+
+User-agent: Bytespider
+Allow: /
+Disallow: /thanks/
+
+Sitemap: https://lasvegaspolerentals.com/sitemap-index.xml

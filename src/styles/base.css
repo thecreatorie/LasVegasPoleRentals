@@ -1,0 +1,198 @@
+/* LVPR base — dark canvas, neon focus rings, custom scrollbar. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-tab-size: 4;
+  tab-size: 4;
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--space-20);
+  background: var(--color-bg);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img,
+picture,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--color-neon-cyan);
+  text-decoration: none;
+  background-image: linear-gradient(var(--color-neon-cyan), var(--color-neon-cyan));
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--duration-base) var(--ease-standard),
+              color var(--duration-fast) var(--ease-standard);
+}
+
+a:hover,
+a:focus-visible {
+  background-size: 100% 1px;
+}
+
+a.accent--magenta { color: var(--color-neon-magenta); background-image: linear-gradient(var(--color-neon-magenta), var(--color-neon-magenta)); }
+a.accent--purple  { color: var(--color-neon-purple);  background-image: linear-gradient(var(--color-neon-purple),  var(--color-neon-purple)); }
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background: var(--color-neon-purple);
+  color: #fff;
+}
+
+/* Custom scrollbar — keeps the dark vibe consistent */
+@supports (scrollbar-color: auto) {
+  html {
+    scrollbar-color: var(--color-neon-purple) var(--color-surface);
+  }
+}
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: var(--color-surface); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--color-neon-purple), var(--color-neon-magenta));
+  border: 3px solid var(--color-surface);
+  border-radius: 9999px;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--space-4);
+  z-index: 200;
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-neon-purple);
+  color: #fff;
+  font-weight: var(--fw-semibold);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: top var(--duration-fast) var(--ease-standard);
+}
+
+.skip-link:focus { top: var(--space-4); }
+
+.container {
+  width: var(--container-width);
+  margin-inline: auto;
+}
+.container-wide {
+  width: var(--container-wide);
+  margin-inline: auto;
+}
+
+.prose {
+  width: var(--content-width);
+  margin-inline: auto;
+}
+
+main { display: block; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Eyebrow utility — used liberally across sections */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-neon-cyan);
+  margin: 0 0 var(--space-4) 0;
+}
+.eyebrow::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--color-neon-cyan);
+}
+
+/* Gradient text utility */
+.text-gradient {
+  background: var(--gradient-neon-sweep);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.text-gradient-hero {
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Section primitives */
+section {
+  position: relative;
+}
+.section-pad {
+  padding-block: var(--space-section);
+}
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--color-border) 20%, var(--color-border) 80%, transparent 100%);
+  margin-block: 0;
+}
+
+/* Reveal-on-scroll wrapper baseline (animated via Reveal.astro script) */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity var(--duration-story) var(--ease-standard),
+              transform var(--duration-story) var(--ease-standard);
+  will-change: opacity, transform;
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+[data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--duration-slow) var(--ease-standard),
+              transform var(--duration-slow) var(--ease-standard);
+  transition-delay: calc(var(--stagger-index, 0) * 80ms);
+}
+[data-reveal-stagger].is-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}

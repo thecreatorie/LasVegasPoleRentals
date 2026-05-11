@@ -1,0 +1,209 @@
+---
+import { siteConfig } from '../site.config';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a href="/" class="footer-logo" aria-label={`${siteConfig.name} — home`}>
+        <span class="wordmark">LVPR</span>
+      </a>
+      <p class="tagline">Portable Lupit pole stages, delivered and set up across Las Vegas. Same-day service available.</p>
+      <div class="footer-contact">
+        <a href={siteConfig.phoneHref} class="footer-phone">
+          <span class="label">Call or text</span>
+          <strong>{siteConfig.phoneDisplay}</strong>
+        </a>
+        <a href={siteConfig.emailHref} class="footer-email">{siteConfig.email}</a>
+      </div>
+    </div>
+
+    <nav aria-label="Site">
+      <h2>Site</h2>
+      <ul>
+        {siteConfig.nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <nav aria-label="Service area">
+      <h2>Serving</h2>
+      <ul>
+        {siteConfig.areaServed.map((a) => <li>{a}</li>)}
+      </ul>
+    </nav>
+
+    <div>
+      <h2>Follow</h2>
+      <ul class="socials">
+        {siteConfig.socials.map((s) => (
+          <li>
+            <a href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name}>
+              {s.icon === 'instagram' && (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
+              )}
+              <span>{s.name}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer-base">
+    <p class="copyright">© {year} {siteConfig.name}. All rights reserved.</p>
+    <p class="parent">
+      {siteConfig.parentBrand.label}
+      <a href={siteConfig.parentBrand.url} target="_blank" rel="noopener noreferrer">{siteConfig.parentBrand.name}</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border-subtle);
+    padding-block: var(--space-section) var(--space-8);
+    margin-top: var(--space-section);
+    overflow: hidden;
+  }
+  .site-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient-neon-sweep);
+    opacity: 0.5;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-10);
+  }
+  @media (min-width: 768px) {
+    .footer-grid { grid-template-columns: 2fr repeat(3, 1fr); gap: var(--space-8); }
+  }
+
+  .footer-logo {
+    display: inline-block;
+    color: var(--color-ink);
+    text-decoration: none;
+    background: none;
+    margin-bottom: var(--space-4);
+  }
+  .footer-logo .wordmark {
+    font-family: var(--font-display);
+    font-size: var(--fs-3xl);
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.18em;
+  }
+  .tagline {
+    margin: 0 0 var(--space-6) 0;
+    color: var(--color-text-muted);
+    max-width: 44ch;
+  }
+
+  .footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .footer-phone {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    text-decoration: none;
+    background: none;
+    color: var(--color-ink);
+  }
+  .footer-phone .label {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-1);
+  }
+  .footer-phone strong {
+    font-family: var(--font-display);
+    font-size: var(--fs-2xl);
+    font-weight: var(--fw-bold);
+    transition: text-shadow var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
+  }
+  .footer-phone:hover strong,
+  .footer-phone:focus-visible strong {
+    color: var(--color-neon-cyan);
+    text-shadow: var(--glow-cyan);
+  }
+  .footer-email {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    background: none;
+    font-size: var(--fs-sm);
+  }
+  .footer-email:hover { color: var(--color-neon-cyan); }
+
+  .site-footer h2 {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-widest);
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  nav ul,
+  .socials {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+  }
+  nav a {
+    color: var(--color-text);
+    text-decoration: none;
+    background: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+  nav a:hover,
+  nav a:focus-visible { color: var(--color-neon-cyan); }
+
+  .socials a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .footer-base {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-subtle);
+    color: var(--color-text-subtle);
+    font-size: var(--fs-sm);
+  }
+  @media (min-width: 640px) {
+    .footer-base {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  .footer-base p { margin: 0; }
+  .footer-base a {
+    color: var(--color-text-muted);
+    text-decoration: underline;
+    background: none;
+  }
+  .footer-base a:hover { color: var(--color-neon-cyan); }
+</style>

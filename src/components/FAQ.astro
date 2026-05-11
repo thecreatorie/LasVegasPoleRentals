@@ -1,0 +1,81 @@
+---
+/**
+ * Native <details>/<summary> accordion with neon styling. Pure HTML —
+ * keyboard-accessible by default, no JS required. The chevron rotates via CSS.
+ */
+export interface Props {
+  items: Array<{ q: string; a: string }>;
+  /** Open the first item by default. */
+  defaultOpen?: boolean;
+}
+const { items, defaultOpen = false } = Astro.props;
+---
+
+<div class="faq" data-reveal-stagger>
+  {items.map((item, i) => (
+    <details class="faq__item" open={defaultOpen && i === 0}>
+      <summary>
+        <span class="faq__q">{item.q}</span>
+        <svg class="faq__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/>
+        </svg>
+      </summary>
+      <div class="faq__a"><p>{item.a}</p></div>
+    </details>
+  ))}
+</div>
+
+<style>
+  .faq {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 800px;
+  }
+  .faq__item {
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: border-color var(--duration-base) var(--ease-standard);
+  }
+  .faq__item:hover,
+  .faq__item[open] {
+    border-color: rgba(168, 85, 247, 0.35);
+  }
+  .faq__item summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-5) var(--space-6);
+    cursor: pointer;
+    list-style: none;
+    color: var(--color-ink);
+    transition: background var(--duration-fast) var(--ease-standard);
+  }
+  .faq__item summary::-webkit-details-marker { display: none; }
+  .faq__item summary:hover {
+    background: color-mix(in oklab, var(--color-neon-purple) 8%, transparent);
+  }
+  .faq__q {
+    flex: 1 1 auto;
+    font-family: var(--font-display);
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-snug);
+  }
+  .faq__chev {
+    flex-shrink: 0;
+    color: var(--color-neon-cyan);
+    transition: transform var(--duration-base) var(--ease-standard);
+  }
+  .faq__item[open] .faq__chev {
+    transform: rotate(180deg);
+  }
+  .faq__a {
+    padding: 0 var(--space-6) var(--space-6);
+    color: var(--color-text-muted);
+    line-height: var(--lh-normal);
+  }
+  .faq__a p { margin: 0; }
+</style>

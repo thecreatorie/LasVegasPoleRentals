@@ -1,0 +1,191 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+import PricingTable from '../components/PricingTable.astro';
+import Button from '../components/Button.astro';
+import { Image } from 'astro:assets';
+import { siteConfig } from '../site.config';
+import { breadcrumbList } from '../lib/breadcrumbs';
+import pole2 from '../assets/images/pole2.jpg';
+import pole3 from '../assets/images/pole3.jpg';
+
+const specs = [
+  { icon: 'ruler',  title: '8’4” or 9’8” poles',  body: 'Measure your ceiling and we’ll bring the right height. Two equal pieces, easy to handle.' },
+  { icon: 'rotate', title: 'Static or spin',       body: 'Lupit Quick Lock™ — change modes mid-performance with a turn of the locking ring. No tools.' },
+  { icon: 'shield', title: '180 lb weight limit',  body: 'Built to safely hold up to 180 lbs (80 kg). Long-leg option adds stability for heavier performers.' },
+  { icon: 'ruler',  title: '5’3” stage diameter',  body: 'Stage needs ~5’10” clear space. Six legs with anti-slip surfaces, rigid construction.' },
+  { icon: 'clock',  title: '5–10 minute setup',    body: 'Our technician handles assembly and teardown. You don’t lift a thing.' },
+  { icon: 'star',   title: '45 mm steel pole',     body: 'Stainless steel and chrome options available, both silver, visually identical. Tell us if you have a metal allergy.' },
+];
+
+const productSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Portable Lupit Pole Stage Rental',
+  description:
+    'Rent a Lupit portable pole dance stage in Las Vegas. Delivered, set up, and picked up. Spin/static, 8’4” or 9’8” heights, 5’3” stage diameter, 180 lb weight limit.',
+  brand: { '@type': 'Brand', name: 'Lupit Pole' },
+  offers: {
+    '@type': 'Offer',
+    priceCurrency: 'USD',
+    price: '250',
+    availability: 'https://schema.org/InStock',
+    url: `${siteConfig.url}/rent-a-pole/`,
+    priceValidUntil: '2027-12-31',
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '5',
+    reviewCount: '5',
+  },
+};
+
+const pageSchema = [
+  productSchema,
+  breadcrumbList([{ name: 'Rent a Pole', path: '/rent-a-pole/' }]),
+];
+---
+
+<PageLayout
+  title="Rent a Pole | Portable Stage Poles for Rent in Las Vegas"
+  description="Las Vegas Pole Rentals delivers portable Lupit pole stages with professional setup and teardown. 24-hour rentals from $250. Same-day service available."
+  eyebrow="Rent a pole"
+  heading="Portable stage poles, delivered."
+  intro="State-of-the-art Lupit pole stages — same-day service across Las Vegas, Henderson, and Summerlin. Spin or static, set up in 10 minutes."
+  schema={pageSchema}
+>
+  <!-- Phone-first CTA strip (merged from /rentapole/ conversion page) -->
+  <section class="phone-strip" data-reveal>
+    <div class="container phone-strip__inner">
+      <div>
+        <p class="label">Ready right now?</p>
+        <p class="phone-strip__phone">
+          <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>
+        </p>
+      </div>
+      <div class="phone-strip__buttons">
+        <Button href={siteConfig.phoneHref} variant="primary" size="lg">Call</Button>
+        <Button href={siteConfig.smsHref}   variant="secondary" size="lg">Text</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why LVPR / Specs -->
+  <section class="section-pad">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Why Lupit"
+        title="A pole built for performance."
+        description="The Lupit Pole Quick Lock™ pushes the boundaries of pole technology. Spin to static in under a second — no allen wrenches, no screws, just a simple turn of the locking ring."
+      />
+      <FeatureGrid items={specs} />
+    </div>
+  </section>
+
+  <!-- Photo proof -->
+  <section class="section-pad" style="padding-top: 0;" data-reveal>
+    <div class="container product-proof">
+      <figure>
+        <Image src={pole2} alt="Lupit pole stage installed in a Las Vegas event space" widths={[480, 768, 1024]} sizes="(min-width: 768px) 50vw, 100vw" />
+      </figure>
+      <figure>
+        <Image src={pole3} alt="Portable pole stage ready for a private event" widths={[480, 768, 1024]} sizes="(min-width: 768px) 50vw, 100vw" />
+      </figure>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="section-pad" style="padding-top: 0;">
+    <div class="container">
+      <SectionHeader eyebrow="Pricing" title="Rent a pole." align="center" />
+    </div>
+    <PricingTable />
+  </section>
+
+  <!-- Final CTA -->
+  <section class="section-pad" style="padding-top: 0;">
+    <div class="container final-cta">
+      <h2 class="hero-title text-gradient-hero">Book a pole.</h2>
+      <p>
+        Call or text <strong><a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a></strong> to lock in your rental.
+        Same-day service available. First come, first served.
+      </p>
+      <div class="final-cta__buttons">
+        <Button href={siteConfig.phoneHref} variant="primary" size="xl">Call {siteConfig.phoneDisplay}</Button>
+        <Button href="/contact/" variant="secondary" size="xl">Send a message</Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .phone-strip {
+    padding-block: var(--space-8);
+    background: var(--color-surface);
+    border-block: 1px solid var(--color-border-subtle);
+  }
+  .phone-strip__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    align-items: center;
+    text-align: center;
+  }
+  @media (min-width: 768px) {
+    .phone-strip__inner {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
+  }
+  .phone-strip__phone {
+    margin: var(--space-1) 0 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+    font-weight: var(--fw-bold);
+    line-height: 1;
+  }
+  .phone-strip__phone a {
+    color: var(--color-ink);
+    text-decoration: none;
+    background: none;
+    transition: color var(--duration-base) var(--ease-standard);
+  }
+  .phone-strip__phone a:hover { color: var(--color-neon-cyan); text-shadow: var(--glow-cyan); }
+  .phone-strip__buttons {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .product-proof {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+  @media (min-width: 768px) { .product-proof { grid-template-columns: 1fr 1fr; } }
+  .product-proof figure {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    background: var(--color-surface);
+  }
+  .product-proof :global(img) { width: 100%; height: 100%; object-fit: cover; }
+
+  .final-cta { text-align: center; max-width: 720px; }
+  .final-cta p {
+    font-size: var(--fs-xl);
+    color: var(--color-text-muted);
+    line-height: var(--lh-normal);
+    margin: var(--space-6) 0 var(--space-8);
+  }
+  .final-cta__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+  }
+</style>

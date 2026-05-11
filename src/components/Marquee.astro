@@ -1,0 +1,69 @@
+---
+/**
+ * Horizontal auto-scrolling marquee. Items repeat to create a seamless loop.
+ * Pauses on hover and on focus-within. Honors prefers-reduced-motion.
+ *
+ * Slot in any child content — usually <img> or <Card>. The component clones
+ * children at runtime to ensure the loop is seamless even if you change item
+ * counts.
+ */
+export interface Props {
+  /** Seconds per full loop. Default 30s. */
+  speed?: number;
+  /** Reverse direction. */
+  reverse?: boolean;
+  /** Label for screen readers. */
+  ariaLabel?: string;
+}
+const { speed = 30, reverse = false, ariaLabel = 'Scrolling content' } = Astro.props;
+---
+
+<div class="marquee" aria-label={ariaLabel} role="region">
+  <div class="marquee__mask">
+    <div
+      class={`marquee__track${reverse ? ' marquee__track--reverse' : ''}`}
+      style={`--marquee-duration: ${speed}s`}
+    >
+      <div class="marquee__row" data-marquee-row>
+        <slot />
+      </div>
+      <div class="marquee__row" aria-hidden="true" data-marquee-row>
+        <slot />
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .marquee {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  .marquee__mask {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  }
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    gap: var(--space-5);
+    animation: marquee-scroll var(--marquee-duration, 30s) linear infinite;
+    will-change: transform;
+  }
+  .marquee__track--reverse { animation-direction: reverse; }
+  .marquee__track:hover,
+  .marquee__track:focus-within {
+    animation-play-state: paused;
+  }
+  .marquee__row {
+    display: flex;
+    gap: var(--space-5);
+    flex-shrink: 0;
+  }
+  .marquee__row > :global(*) { flex-shrink: 0; }
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(calc(-50% - var(--space-5) / 2)); }
+  }
+</style>

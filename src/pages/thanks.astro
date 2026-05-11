@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import { siteConfig } from '../site.config';
+---
+
+<BaseLayout
+  title={`Thanks | ${siteConfig.name}`}
+  description="Your inquiry was received. We'll be in touch shortly."
+  noindex={true}
+  hideStickyCta={true}
+>
+  <section class="section-pad" style="text-align: center; min-height: 60vh; display: flex; align-items: center;">
+    <div class="container">
+      <p class="eyebrow" style="justify-content: center;">Got it</p>
+      <h1 class="hero-title text-gradient-hero">Thank you.</h1>
+      <p style="max-width: 50ch; margin: var(--space-6) auto 0; font-size: var(--fs-xl); color: var(--color-text-muted);">
+        Your inquiry hit our inbox. We'll text you back within a few hours. For anything urgent, call <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>.
+      </p>
+      <div style="margin-top: var(--space-8); display: flex; gap: var(--space-3); justify-content: center;">
+        <Button href="/" variant="secondary" size="lg">Back to site</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

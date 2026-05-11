@@ -1,0 +1,118 @@
+---
+/**
+ * Pricing display for LVPR. Two-tier: 24-hour standard + additional days.
+ */
+import Button from './Button.astro';
+---
+
+<section class="pricing">
+  <div class="pricing__inner">
+    <article class="pricing__card pricing__card--main">
+      <p class="label">Standard rental</p>
+      <h3>24-hour rental</h3>
+      <p class="pricing__amount text-gradient-hero">$250</p>
+      <p class="pricing__sub">Stage and pole · setup &amp; teardown · same-day available</p>
+      <ul class="pricing__list">
+        <li>Professional setup &amp; teardown</li>
+        <li>Insurance included</li>
+        <li>Up to 24 hours from delivery</li>
+        <li>Anywhere in the Las Vegas Valley</li>
+      </ul>
+      <Button href="/rent-a-pole/" variant="primary" size="lg" fullWidth>Book this</Button>
+    </article>
+    <article class="pricing__card">
+      <p class="label">Additional days</p>
+      <h3>+24 hour rental</h3>
+      <p class="pricing__amount text-gradient">$200</p>
+      <p class="pricing__sub">per additional day</p>
+      <ul class="pricing__list">
+        <li>Extends any rental beyond 24 hours</li>
+        <li>Add as many days as you need</li>
+        <li>Same delivery, same setup</li>
+      </ul>
+      <Button href="/rent-a-pole/" variant="secondary" size="lg" fullWidth>Add days</Button>
+    </article>
+  </div>
+  <p class="pricing__foot">First come, first served. Payment due on day of setup. Advance booking recommended.</p>
+</section>
+
+<style>
+  .pricing { padding-block: var(--space-section); }
+  .pricing__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    max-width: 880px;
+    margin-inline: auto;
+  }
+  @media (min-width: 768px) { .pricing__inner { grid-template-columns: 1.1fr 1fr; align-items: stretch; } }
+
+  .pricing__card {
+    padding: var(--space-8);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    position: relative;
+    overflow: hidden;
+  }
+  .pricing__card--main {
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow: 0 0 36px rgba(168, 85, 247, 0.18);
+  }
+  .pricing__card--main::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--gradient-button);
+  }
+  .pricing__card h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--fs-2xl);
+  }
+  .pricing__amount {
+    margin: var(--space-2) 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 2rem + 5vw, 5rem);
+    font-weight: var(--fw-bold);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+  .pricing__sub {
+    margin: 0 0 var(--space-4);
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+  }
+  .pricing__list {
+    list-style: none;
+    margin: 0 0 var(--space-6);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .pricing__list li {
+    position: relative;
+    padding-left: var(--space-6);
+    color: var(--color-text);
+    line-height: var(--lh-normal);
+  }
+  .pricing__list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-neon-cyan);
+    font-weight: var(--fw-bold);
+  }
+
+  .pricing__foot {
+    margin-top: var(--space-6);
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+  }
+</style>

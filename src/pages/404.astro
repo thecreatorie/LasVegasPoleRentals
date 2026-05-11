@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import { siteConfig } from '../site.config';
+---
+
+<BaseLayout
+  title={`Page not found | ${siteConfig.name}`}
+  description="The page you're looking for doesn't exist. Head back to the homepage or call us."
+  noindex={true}
+>
+  <section class="section-pad" style="text-align: center; min-height: 60vh; display: flex; align-items: center;">
+    <div class="container">
+      <p class="eyebrow" style="justify-content: center;">404</p>
+      <h1 class="hero-title text-gradient-hero">Page not found.</h1>
+      <p style="max-width: 50ch; margin: var(--space-6) auto 0; font-size: var(--fs-xl); color: var(--color-text-muted);">
+        The page you're looking for moved or never existed. Try the homepage — or text us at <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a> and we'll point you to what you need.
+      </p>
+      <div style="margin-top: var(--space-8); display: flex; gap: var(--space-3); justify-content: center; flex-wrap: wrap;">
+        <Button href="/" variant="primary" size="lg">Go home</Button>
+        <Button href={siteConfig.phoneHref} variant="secondary" size="lg">Call us</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

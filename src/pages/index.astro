@@ -1,0 +1,195 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+import PricingTable from '../components/PricingTable.astro';
+import StatsBand from '../components/StatsBand.astro';
+import Marquee from '../components/Marquee.astro';
+import Testimonial from '../components/Testimonial.astro';
+import Button from '../components/Button.astro';
+import { Image } from 'astro:assets';
+import { siteConfig } from '../site.config';
+import { testimonials } from '../data/testimonials';
+
+import poleHero from '../assets/images/pole1.jpg';
+import pole2 from '../assets/images/pole2.jpg';
+import pole3 from '../assets/images/pole3.jpg';
+import pole4 from '../assets/images/pole4.jpg';
+import pole5 from '../assets/images/pole5.jpg';
+
+const gallery = [
+  { src: poleHero, alt: 'Lupit pole stage with neon purple and cyan stage lighting' },
+  { src: pole2, alt: 'Portable pole stage in a low-lit Las Vegas event space' },
+  { src: pole3, alt: 'Lupit pole stage ready for an event' },
+  { src: pole4, alt: 'Pole stage set up in a hotel room' },
+  { src: pole5, alt: 'Pole rental setup for a private party' },
+];
+
+const features = [
+  { icon: 'bolt',   title: 'Lupit Quick Lock™', body: 'Spin to static in under a second. No allen wrenches, no screws — just turn the locking ring at the base.' },
+  { icon: 'truck',  title: 'We deliver & set up', body: 'Hotels, venues, studios, private homes. We bring the stage, set it up, and pick it up.' },
+  { icon: 'clock',  title: '10-minute setup',    body: 'Pole stage assembled in 5–10 minutes. Looks great indoors or outdoors.' },
+  { icon: 'shield', title: 'Insurance included', body: 'Every rental includes liability coverage. Peace of mind for you and your venue.' },
+  { icon: 'ruler',  title: 'Two pole heights',    body: 'Measure your ceiling and choose between 8’4” and 9’8”. 5’3” diameter stage, 6 anti-slip legs.' },
+  { icon: 'star',   title: 'Same-day service',   body: 'Need a pole today? No problem. First come, first served — call us and we’ll get you on the schedule.' },
+];
+
+const homeSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Rent a Stripper Pole in Las Vegas | Las Vegas Pole Rentals',
+  description: siteConfig.description,
+  url: siteConfig.url + '/',
+};
+---
+
+<BaseLayout
+  title={`Rent a Stripper Pole in Las Vegas | ${siteConfig.name}`}
+  description={siteConfig.description}
+  schema={homeSchema}
+>
+  <Hero
+    eyebrow={`Serving ${siteConfig.areaServed.slice(0, 3).join(', ')}`}
+    title="pole rentals."
+    titleHighlight="Las Vegas"
+    subtitle="Portable Lupit pole stages, delivered and set up in your hotel room, venue, or studio. Same-day service. Rates from $250 for 24 hours."
+    image={poleHero}
+    imageAlt="Lupit pole stage with neon purple and cyan stage lighting"
+    ctaLabel="Book a Pole"
+    ctaHref="/rent-a-pole/"
+    secondaryCtaLabel="See the gallery"
+    secondaryCtaHref="/view-photos/"
+    fullBleed={true}
+  />
+
+  <div id="below-hero"></div>
+
+  <About />
+
+  <StatsBand items={[...siteConfig.stats]} />
+
+  <!-- Why LVPR -->
+  <section class="section-pad">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Why LVPR"
+        title="Rent a portable stripper pole."
+        description="State-of-the-art Lupit stages. Real engineering, real setup, real service."
+      />
+      <FeatureGrid items={features} />
+    </div>
+  </section>
+
+  <!-- Gallery preview -->
+  <section class="section-pad" style="padding-top: 0;">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Gallery"
+        title="Pole stages in the wild."
+        description="Real setups in real Las Vegas spaces — hotel suites, event venues, private homes."
+      />
+    </div>
+    <Marquee speed={42} ariaLabel="Photo gallery row 1">
+      {gallery.map((img) => (
+        <figure class="home-gallery-photo">
+          <Image src={img.src} alt={img.alt} widths={[320, 480]} sizes="320px" />
+        </figure>
+      ))}
+    </Marquee>
+    <div style="height: var(--space-5)"></div>
+    <Marquee speed={56} reverse={true} ariaLabel="Photo gallery row 2">
+      {gallery.slice().reverse().map((img) => (
+        <figure class="home-gallery-photo">
+          <Image src={img.src} alt={img.alt} widths={[320, 480]} sizes="320px" />
+        </figure>
+      ))}
+    </Marquee>
+    <div class="container" style="text-align: center; margin-top: var(--space-10);">
+      <Button href="/view-photos/" variant="secondary" size="lg">See full gallery</Button>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="section-pad" style="padding-top: 0;">
+    <div class="container">
+      <SectionHeader eyebrow="Pricing" title="Rates that make sense." align="center" />
+    </div>
+    <PricingTable />
+  </section>
+
+  <!-- Testimonials marquee -->
+  <section class="section-pad" style="padding-top: 0;">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Reviews"
+        title="Check out our reviews."
+        description="From anniversaries to corporate trade shows — real Las Vegas customers."
+      />
+    </div>
+    <Marquee speed={60} ariaLabel="Testimonials">
+      {testimonials.map((t) => (
+        <div class="home-testimonial-card">
+          <Testimonial quote={t.quote.slice(0, 280) + (t.quote.length > 280 ? '…' : '')} name={t.name} location={t.location} rating={t.rating} />
+        </div>
+      ))}
+    </Marquee>
+    <div class="container" style="text-align: center; margin-top: var(--space-10);">
+      <Button href="/testimonials/" variant="secondary" size="lg">Read all reviews</Button>
+    </div>
+  </section>
+
+  <!-- Contact CTA -->
+  <section class="section-pad" style="padding-top: 0;">
+    <div class="container home-cta">
+      <p class="eyebrow" style="justify-content: center;">Ready?</p>
+      <h2 class="hero-title text-gradient-hero">Need a pole today?</h2>
+      <p class="home-cta__sub">
+        Call or text <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a> for same-day service —
+        or send a quick message and we'll come back to you within a few hours.
+      </p>
+      <div class="home-cta__ctas">
+        <Button href={siteConfig.phoneHref} variant="primary" size="xl">Call {siteConfig.phoneDisplay}</Button>
+        <Button href="/contact/" variant="secondary" size="xl">Send a message</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .home-gallery-photo {
+    width: 320px;
+    aspect-ratio: 4/3;
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+  }
+  .home-gallery-photo :global(img) {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform var(--duration-base) var(--ease-standard);
+  }
+  .home-gallery-photo:hover :global(img) { transform: scale(1.05); }
+
+  .home-testimonial-card {
+    width: 380px;
+    flex-shrink: 0;
+  }
+
+  .home-cta { text-align: center; max-width: 720px; }
+  .home-cta__sub {
+    margin: var(--space-6) 0 var(--space-8);
+    font-size: var(--fs-xl);
+    color: var(--color-text-muted);
+    line-height: var(--lh-normal);
+  }
+  .home-cta__sub a { font-weight: var(--fw-bold); }
+  .home-cta__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+  }
+</style>

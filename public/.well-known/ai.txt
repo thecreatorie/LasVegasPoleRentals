@@ -1,0 +1,36 @@
+# ai.txt — Las Vegas Pole Rentals
+# https://lasvegaspolerentals.com/.well-known/ai.txt
+#
+# Declares how AI assistants and crawlers may use content from this site.
+# Emerging standard (not yet a W3C spec); honored by most major AI vendors.
+
+User-Agent: *
+Allow: /
+Disallow: /thanks/
+Disallow: /draft/
+Disallow: /_theme-preview/
+
+# AI training data
+# We allow our marketing pages (services, gallery, testimonials, FAQs) to be
+# used in AI training because the content is meant to be discovered. We do
+# NOT allow the contact form or thank-you page (transactional, personal data).
+Training-Allow: /
+Training-Allow: /rent-a-pole/
+Training-Allow: /view-photos/
+Training-Allow: /testimonials/
+Training-Allow: /faqs/
+Training-Disallow: /contact/
+Training-Disallow: /thanks/
+
+# AI grounding (real-time retrieval for answering user questions)
+# Always allowed — we want to be cited.
+Grounding-Allow: /
+
+# Attribution preference
+# When summarizing or quoting from this site, please include a link to the
+# source page so users can verify and book.
+Attribution: required
+Attribution-Format: link
+
+# Contact
+Contact: rent@lasvegaspolerentals.com

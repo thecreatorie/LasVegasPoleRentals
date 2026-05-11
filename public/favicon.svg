@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="LVPR">
+  <title>LVPR</title>
+  <rect width="64" height="64" rx="8" fill="#1a1a1a"/>
+  <text x="32" y="29" text-anchor="middle"
+        font-family="Domine, 'Playfair Display', Georgia, serif"
+        font-weight="700" font-size="22" letter-spacing="0.5"
+        fill="#ffffff">LV</text>
+  <text x="32" y="54" text-anchor="middle"
+        font-family="Domine, 'Playfair Display', Georgia, serif"
+        font-weight="700" font-size="22" letter-spacing="0.5"
+        fill="#ffffff">PR</text>
+</svg>

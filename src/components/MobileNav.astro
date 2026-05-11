@@ -1,0 +1,168 @@
+---
+import { siteConfig } from '../site.config';
+---
+
+<div class="mobile-nav-wrap">
+  <button id="mobile-nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav-drawer" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18"/>
+    </svg>
+  </button>
+
+  <div id="mobile-nav-drawer" class="drawer" hidden>
+    <div class="drawer-inner">
+      <nav aria-label="Mobile primary">
+        <ul>
+          {siteConfig.nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        </ul>
+      </nav>
+      <div class="drawer-cta">
+        <a href={siteConfig.phoneHref} class="drawer-phone">{siteConfig.phoneDisplay}</a>
+        <a href={siteConfig.smsHref} class="drawer-sms">Text us</a>
+      </div>
+      <p class="drawer-foot">{siteConfig.parentBrand.label} <a href={siteConfig.parentBrand.url}>{siteConfig.parentBrand.name}</a></p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mobile-nav-wrap button {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    padding: var(--space-2);
+    cursor: pointer;
+    color: var(--color-text);
+    border-radius: var(--radius-md);
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color var(--duration-fast) var(--ease-standard),
+                color var(--duration-fast) var(--ease-standard);
+  }
+  .mobile-nav-wrap button:hover,
+  .mobile-nav-wrap button:focus-visible {
+    border-color: var(--color-neon-purple);
+    color: var(--color-neon-purple);
+  }
+
+  @media (min-width: 1024px) {
+    .mobile-nav-wrap { display: none; }
+  }
+
+  .drawer {
+    position: fixed;
+    inset: 0;
+    background: color-mix(in oklab, var(--color-bg) 96%, transparent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 100;
+    padding: var(--space-20) var(--space-6) var(--space-6);
+    overflow-y: auto;
+    animation: drawer-in var(--duration-base) var(--ease-standard);
+  }
+  @keyframes drawer-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .drawer[hidden] { display: none; }
+  .drawer-inner {
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .drawer nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .drawer nav a {
+    display: block;
+    padding: var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-size: var(--fs-2xl);
+    font-weight: var(--fw-bold);
+    transition: background var(--duration-fast) var(--ease-standard),
+                border-color var(--duration-fast) var(--ease-standard),
+                color var(--duration-fast) var(--ease-standard);
+  }
+  .drawer nav a:hover,
+  .drawer nav a:focus-visible {
+    background: var(--color-surface-raised);
+    border-color: var(--color-neon-purple);
+    color: var(--color-neon-purple);
+  }
+
+  .drawer-cta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+  }
+  .drawer-phone,
+  .drawer-sms {
+    text-align: center;
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    background: none;
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-base);
+  }
+  .drawer-phone {
+    background: var(--gradient-button);
+    color: #fff;
+    box-shadow: var(--glow-purple);
+  }
+  .drawer-sms {
+    border: 1px solid var(--color-neon-cyan);
+    color: var(--color-neon-cyan);
+  }
+
+  .drawer-foot {
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+    margin: 0;
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('mobile-nav-toggle');
+  const drawer = document.getElementById('mobile-nav-drawer');
+
+  if (toggle && drawer) {
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!open));
+      toggle.setAttribute('aria-label', !open ? 'Close menu' : 'Open menu');
+      if (open) {
+        drawer.setAttribute('hidden', '');
+        document.body.style.overflow = '';
+      } else {
+        drawer.removeAttribute('hidden');
+        document.body.style.overflow = 'hidden';
+        const first = drawer.querySelector('a');
+        (first as HTMLElement | null)?.focus();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        toggle.click();
+        toggle.focus();
+      }
+    });
+  }
+</script>

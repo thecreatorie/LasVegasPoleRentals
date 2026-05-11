@@ -1,0 +1,141 @@
+---
+/**
+ * Replaces the broken Google Map placeholder from the WP source with a
+ * service-area graphic — pure SVG, no third-party map dependency. Shows
+ * the cities served + a delivery radius hint.
+ */
+import { siteConfig } from '../site.config';
+---
+
+<section class="service-area" data-reveal>
+  <div class="container">
+    <div class="service-area__grid">
+      <div>
+        <p class="eyebrow">Service area</p>
+        <h2>We come to you<br /><span class="text-gradient">anywhere on the strip.</span></h2>
+        <p class="service-area__lede">
+          LVPR is mobile. We deliver, set up, and pick up your pole stage at hotels, event venues,
+          private homes, and studios across the Las Vegas Valley.
+        </p>
+        <ul class="service-area__cities">
+          {siteConfig.areaServed.map((c) => (
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-8 8-13a8 8 0 1 0-16 0c0 5 8 13 8 13z"/>
+                <circle cx="12" cy="9" r="3"/>
+              </svg>
+              <span>{c}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="service-area__note">Outside the valley? Call <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a> — we'll work something out.</p>
+      </div>
+      <div class="service-area__visual" aria-hidden="true">
+        <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="sa-grad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"  stop-color="#a855f7" stop-opacity="0.6" />
+              <stop offset="60%" stop-color="#ec4899" stop-opacity="0.18" />
+              <stop offset="100%" stop-color="#0a0a0f" stop-opacity="0" />
+            </radialGradient>
+            <linearGradient id="sa-ring" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%"  stop-color="#22d3ee" />
+              <stop offset="100%" stop-color="#a855f7" />
+            </linearGradient>
+          </defs>
+          <!-- glow background -->
+          <circle cx="160" cy="160" r="155" fill="url(#sa-grad)" />
+          <!-- pulse rings -->
+          <circle cx="160" cy="160" r="140" fill="none" stroke="url(#sa-ring)" stroke-width="1" stroke-dasharray="2 4" opacity="0.5">
+            <animate attributeName="r" values="140;145;140" dur="4s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="160" cy="160" r="105" fill="none" stroke="url(#sa-ring)" stroke-width="1" stroke-dasharray="3 6" opacity="0.7">
+            <animate attributeName="r" values="105;110;105" dur="3.2s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="160" cy="160" r="70" fill="none" stroke="url(#sa-ring)" stroke-width="1.5" opacity="0.85" />
+          <!-- center pin -->
+          <g transform="translate(160 160)">
+            <circle r="8" fill="#ec4899" />
+            <circle r="14" fill="none" stroke="#ec4899" stroke-width="2" opacity="0.6">
+              <animate attributeName="r" values="10;22;10" dur="2.4s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.8;0;0.8" dur="2.4s" repeatCount="indefinite" />
+            </circle>
+            <text y="-22" text-anchor="middle" fill="#fafafa" font-size="11" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="600" letter-spacing="0.1em">LAS VEGAS</text>
+          </g>
+          <!-- secondary city pins -->
+          <g fill="#22d3ee">
+            <g transform="translate(110 200)"><circle r="4" /><text y="14" text-anchor="middle" fill="#a1a1aa" font-size="9">Spring Valley</text></g>
+            <g transform="translate(230 195)"><circle r="4" /><text y="14" text-anchor="middle" fill="#a1a1aa" font-size="9">Henderson</text></g>
+            <g transform="translate(100 105)"><circle r="4" /><text y="-8" text-anchor="middle" fill="#a1a1aa" font-size="9">Summerlin</text></g>
+            <g transform="translate(215 110)"><circle r="4" /><text y="-8" text-anchor="middle" fill="#a1a1aa" font-size="9">Paradise</text></g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .service-area {
+    padding-block: var(--space-section);
+    position: relative;
+    overflow: hidden;
+  }
+  .service-area__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .service-area__grid { grid-template-columns: 1.1fr 1fr; gap: var(--space-16); }
+  }
+
+  .service-area h2 {
+    margin: var(--space-2) 0 var(--space-6);
+  }
+  .service-area__lede {
+    color: var(--color-text-muted);
+    font-size: var(--fs-lg);
+    line-height: var(--lh-normal);
+    margin: 0 0 var(--space-6);
+    max-width: 50ch;
+  }
+  .service-area__cities {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: var(--space-3);
+  }
+  .service-area__cities li {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-full);
+    color: var(--color-text);
+    font-size: var(--fs-sm);
+  }
+  .service-area__cities svg { color: var(--color-neon-cyan); flex-shrink: 0; }
+
+  .service-area__note {
+    margin-top: var(--space-6);
+    color: var(--color-text-muted);
+  }
+  .service-area__note a {
+    font-weight: var(--fw-bold);
+  }
+
+  .service-area__visual {
+    margin-inline: auto;
+    max-width: 420px;
+  }
+  .service-area__visual svg {
+    width: 100%;
+    height: auto;
+  }
+</style>
