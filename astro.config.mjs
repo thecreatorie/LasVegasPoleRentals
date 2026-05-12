@@ -1,10 +1,14 @@
 import { defineConfig } from 'astro/config';
-import sitemap from '@astrojs/sitemap';
 import compress from 'astro-compress';
 
 // LVPR — Las Vegas Pole Rentals
 // Production site URL set to the current domain so the Astro build can replace
 // the WordPress install in-place once DNS is switched.
+//
+// Sitemap is served statically from public/sitemap.xml. The @astrojs/sitemap
+// plugin crashes on the redirects: config below in 3.x; for a 6-page site a
+// hand-maintained sitemap is simpler than chasing the plugin bug.
+
 export default defineConfig({
   site: 'https://lasvegaspolerentals.com',
   trailingSlash: 'always',
@@ -20,17 +24,6 @@ export default defineConfig({
     defaultStrategy: 'viewport',
   },
   integrations: [
-    sitemap({
-      // @astrojs/sitemap@3.2 has a known bug where a custom `serialize` callback
-      // crashes when combined with top-level `lastmod`/`changefreq` (reduce on
-      // undefined). Keep the config minimal — Google ignores `priority` and
-      // `changefreq` in practice anyway.
-      filter: (page) =>
-        !page.includes('/draft/') &&
-        !page.includes('/_theme-preview') &&
-        !page.endsWith('/thanks/') &&
-        !page.endsWith('/404/'),
-    }),
     compress({
       HTML: true,
       CSS: true,
