@@ -32,7 +32,7 @@ const features = [
   { icon: 'truck',  title: 'We deliver & set up', body: 'Hotels, venues, studios, private homes. We bring the stage, set it up, and pick it up.' },
   { icon: 'clock',  title: '10-minute setup',    body: 'Pole stage assembled in 5–10 minutes. Looks great indoors or outdoors.' },
   { icon: 'shield', title: 'Insurance included', body: 'Every rental includes liability coverage. Peace of mind for you and your venue.' },
-  { icon: 'ruler',  title: 'Two pole heights',    body: 'Measure your ceiling and choose between 8’4” and 9’8”. 5’3” diameter stage, 6 anti-slip legs.' },
+  { icon: 'ruler',  title: 'Three pole heights',    body: 'Choose between 8’4”, 9\' and 9’8”. We\'ll bring all three options. 5’3” diameter stage, 6 anti-slip legs.' },
   { icon: 'star',   title: 'Same-day service',   body: 'Need a pole today? No problem. First come, first served — call us and we’ll get you on the schedule.' },
 ];
 
@@ -119,7 +119,7 @@ const homeSchema = {
     <PricingTable />
   </section>
 
-  <!-- Testimonials marquee -->
+  <!-- Testimonials grid -->
   <section class="section-pad" style="padding-top: 0;">
     <div class="container">
       <SectionHeader
@@ -128,13 +128,13 @@ const homeSchema = {
         description="From anniversaries to corporate trade shows — real Las Vegas customers."
       />
     </div>
-    <Marquee speed={60} ariaLabel="Testimonials">
-      {testimonials.map((t) => (
+    <div class="container testimonials-grid">
+      {testimonials.slice(0, 4).map((t) => (
         <div class="home-testimonial-card">
           <Testimonial quote={t.quote.slice(0, 280) + (t.quote.length > 280 ? '…' : '')} name={t.name} location={t.location} rating={t.rating} />
         </div>
       ))}
-    </Marquee>
+    </div>
     <div class="container" style="text-align: center; margin-top: var(--space-10);">
       <Button href="/testimonials/" variant="secondary" size="lg">Read all reviews</Button>
     </div>
@@ -174,8 +174,19 @@ const homeSchema = {
   .home-gallery-photo:hover :global(img) { transform: scale(1.05); }
 
   .home-testimonial-card {
-    width: 380px;
-    flex-shrink: 0;
+    width: 100%;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: 1fr;
+    margin-top: var(--space-8);
+  }
+  @media (min-width: 768px) {
+    .testimonials-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   .home-cta { text-align: center; max-width: 720px; }
