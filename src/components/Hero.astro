@@ -33,6 +33,7 @@ const {
   secondaryCtaHref,
   fullBleed = false,
 } = Astro.props;
+const hasAside = Astro.slots.has('aside');
 ---
 
 <section class={`hero${fullBleed ? ' hero--full' : ''}`}>
@@ -53,7 +54,8 @@ const {
   <div class="ambient-orb ambient-orb--purple" aria-hidden="true"></div>
   <div class="ambient-orb ambient-orb--magenta" aria-hidden="true"></div>
 
-  <div class="container hero__inner">
+  <div class:list={['container hero__inner', { 'hero__inner--split': hasAside }]}>
+    <div class="hero__copy">
     {eyebrow && <p class="eyebrow hero__eyebrow">{eyebrow}</p>}
     <h1 class="hero-title">
       {titleHighlight && <span class="text-gradient-hero">{titleHighlight}</span>}
@@ -70,6 +72,8 @@ const {
       <span>or text/call</span>
       <strong>{siteConfig.phoneDisplay}</strong>
     </a>
+    </div>
+    {hasAside && <div class="hero__aside"><slot name="aside" /></div>}
   </div>
 
   {fullBleed && (
@@ -168,6 +172,16 @@ const {
     position: relative;
     z-index: 3;
     max-width: 900px;
+  }
+  .hero__inner--split {
+    max-width: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-10);
+    align-items: center;
+  }
+  @media (min-width: 960px) {
+    .hero__inner--split { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); }
   }
   .hero__eyebrow { color: var(--color-neon-cyan); }
   .hero__eyebrow::before { background: var(--color-neon-cyan); }

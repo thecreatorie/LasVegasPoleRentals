@@ -1,0 +1,74 @@
+---
+// Short, silent, looping clip. Shows the poster instantly, downloads nothing
+// until the clip is near the viewport, and only plays while on screen.
+// Files live in /public/video as <name>.webm, <name>.mp4 and <name>-poster.jpg.
+export interface Props {
+  name: string;
+  label: string;
+  /** Load straight away (above the fold) instead of waiting for scroll. */
+  eager?: boolean;
+  class?: string;
+}
+
+const { name, label, eager = false, class: className } = Astro.props;
+const base = `/video/${name}`;
+---
+
+<video
+  class:list={['video-loop', className]}
+  data-video-loop
+  data-eager={eager ? '' : undefined}
+  poster={`${base}-poster.jpg`}
+  width="432"
+  height="768"
+  muted
+  loop
+  playsinline
+  preload="none"
+  aria-label={label}
+>
+  <source data-src={`${base}.webm`} type="video/webm" />
+  <source data-src={`${base}.mp4`} type="video/mp4" />
+</video>
+
+<style>
+  .video-loop {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: var(--color-surface);
+  }
+</style>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const videos = document.querySelectorAll<HTMLVideoElement>('video[data-video-loop]');
+
+  const load = (v: HTMLVideoElement) => {
+    if (v.dataset.loaded) return;
+    v.querySelectorAll<HTMLSourceElement>('source[data-src]').forEach((s) => { s.src = s.dataset.src!; });
+    v.load();
+    v.dataset.loaded = '1';
+  };
+
+  if (!reduceMotion) {
+    // Start downloading a little before the clip scrolls into view…
+    const preload = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { load(e.target as HTMLVideoElement); preload.unobserve(e.target); } });
+    }, { rootMargin: '300px 0px' });
+    // …and only play while it is actually on screen.
+    const play = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        const v = e.target as HTMLVideoElement;
+        if (e.isIntersecting) { load(v); v.play().catch(() => {}); } else { v.pause(); }
+      });
+    }, { threshold: 0.25 });
+
+    videos.forEach((v) => {
+      if (v.dataset.eager !== undefined) load(v);
+      preload.observe(v);
+      play.observe(v);
+    });
+  }
+</script>
