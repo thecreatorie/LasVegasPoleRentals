@@ -22,7 +22,7 @@ export const siteConfig = {
   },
   // Fawnia's sister sites, listed in the footer.
   family: [
-    { name: 'TASTE The Show', url: 'https://thecreatorie.github.io/thetasteshow/' },
+    { name: 'TASTE The Show', url: 'https://tastetheshow.com/' },
     { name: 'Pole Fitness Studio', url: 'https://www.polefitnessstudio.com' },
     { name: 'Pole Fitness Online', url: 'https://www.polefitnessonline.com' },
     { name: 'Officially Fawnia', url: 'https://www.officiallyfawnia.com' },
