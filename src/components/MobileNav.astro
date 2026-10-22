@@ -9,7 +9,15 @@ import { siteConfig } from '../site.config';
     </svg>
   </button>
 
-  <div id="mobile-nav-drawer" class="drawer" hidden>
+  <div id="mobile-nav-drawer" class="drawer" hidden role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="drawer-top">
+      <a href="/" class="drawer-logo" aria-label={`${siteConfig.name} — home`}>LVPR</a>
+      <button type="button" class="drawer-close" aria-label="Close menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+    </div>
     <div class="drawer-inner">
       <nav aria-label="Mobile primary">
         <ul>
@@ -26,7 +34,8 @@ import { siteConfig } from '../site.config';
 </div>
 
 <style>
-  .mobile-nav-wrap button {
+  .mobile-nav-wrap button,
+  .drawer-close {
     background: transparent;
     border: 1px solid var(--color-border);
     padding: var(--space-2);
@@ -42,7 +51,9 @@ import { siteConfig } from '../site.config';
                 color var(--duration-fast) var(--ease-standard);
   }
   .mobile-nav-wrap button:hover,
-  .mobile-nav-wrap button:focus-visible {
+  .mobile-nav-wrap button:focus-visible,
+  .drawer-close:hover,
+  .drawer-close:focus-visible {
     border-color: var(--color-neon-purple);
     color: var(--color-neon-purple);
   }
@@ -58,7 +69,7 @@ import { siteConfig } from '../site.config';
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     z-index: 100;
-    padding: var(--space-20) var(--space-6) var(--space-6);
+    padding: 0 var(--space-6) var(--space-8);
     overflow-y: auto;
     animation: drawer-in var(--duration-base) var(--ease-standard);
   }
@@ -67,6 +78,22 @@ import { siteConfig } from '../site.config';
     to   { opacity: 1; transform: translateY(0); }
   }
   .drawer[hidden] { display: none; }
+  .drawer-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 480px;
+    margin: 0 auto var(--space-6);
+    padding-block: var(--space-4);
+  }
+  .drawer-logo {
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.12em;
+    color: var(--color-text);
+    text-decoration: none;
+  }
   .drawer-inner {
     max-width: 480px;
     margin: 0 auto;
@@ -143,6 +170,10 @@ import { siteConfig } from '../site.config';
   const drawer = document.getElementById('mobile-nav-drawer');
 
   if (toggle && drawer) {
+    // The header's backdrop-filter makes it the containing block for fixed
+    // children, which clipped the drawer and hid the toggle; live on <body>.
+    document.body.appendChild(drawer);
+
     toggle.addEventListener('click', () => {
       const open = toggle.getAttribute('aria-expanded') === 'true';
       toggle.setAttribute('aria-expanded', String(!open));
@@ -157,6 +188,14 @@ import { siteConfig } from '../site.config';
         (first as HTMLElement | null)?.focus();
       }
     });
+
+    drawer.querySelector('.drawer-close')?.addEventListener('click', () => {
+      toggle.click();
+      toggle.focus();
+    });
+    drawer.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
+      if (toggle.getAttribute('aria-expanded') === 'true') toggle.click();
+    }));
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {

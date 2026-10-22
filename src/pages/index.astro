@@ -18,9 +18,23 @@ import pole2 from '../assets/images/pole2.jpg';
 import pole3 from '../assets/images/pole3.jpg';
 import pole4 from '../assets/images/pole4.jpg';
 import pole5 from '../assets/images/pole5.jpg';
+import canopyShoot from '../assets/images/canopy-shoot.jpg';
+import morningBlend from '../assets/images/morning-blend.jpg';
+import skatePole from '../assets/images/skate-pole.jpg';
+import VideoLoop from '../components/VideoLoop.astro';
+
+const reel = [
+  { name: 'festival-stage', title: 'Festival main stage', note: 'Installed on a festival stage build' },
+  { name: 'house-party', title: 'House party', note: 'DJ, lights and a pole in the living room' },
+  { name: 'pool-party', title: 'Backyard pool party', note: 'Set up on the lawn, grip kit included' },
+  { name: 'event-setup', title: 'Warehouse event', note: 'Two stages flanking the DJ booth' },
+];
 
 const gallery = [
   { src: poleHero, alt: 'Lupit pole stage with neon purple and cyan stage lighting' },
+  { src: canopyShoot, alt: 'Dancer inverted on a rented pole under a lit canopy at an outdoor photo shoot' },
+  { src: skatePole, alt: 'Dancer and skateboarder posing with a white pole stage in a Las Vegas wash' },
+  { src: morningBlend, alt: 'Two instructors with a Lupit pole stage on the Las Vegas Morning Blend TV set' },
   { src: pole2, alt: 'Portable pole stage in a low-lit Las Vegas event space' },
   { src: pole3, alt: 'Lupit pole stage ready for an event' },
   { src: pole4, alt: 'Pole stage set up in a hotel room' },
@@ -35,6 +49,8 @@ const features = [
   { icon: 'ruler',  title: 'Three pole heights',    body: 'Choose between 8’4”, 9\' and 9’8”. We\'ll bring all three options. 5’3” diameter stage, 6 anti-slip legs.' },
   { icon: 'star',   title: 'Same-day service',   body: 'Need a pole today? No problem. First come, first served — call us and we’ll get you on the schedule.' },
 ];
+
+const teacherSms = 'sms:+17022051440?&body=' + encodeURIComponent('Hi! I would like to rent a pole and hire a pole teacher.');
 
 const homeSchema = {
   '@context': 'https://schema.org',
@@ -62,13 +78,42 @@ const homeSchema = {
     secondaryCtaLabel="See the gallery"
     secondaryCtaHref="/view-photos/"
     fullBleed={true}
-  />
+  >
+    <div slot="aside" class="hero-reel">
+      <div class="hero-reel__frame">
+        <VideoLoop name="hotel-suite" label="A Lupit pole stage set up in a high-rise hotel suite overlooking the Las Vegas Strip" eager />
+        <span class="hero-reel__tag"><span class="live-dot" aria-hidden="true"></span> Delivered to your suite</span>
+      </div>
+      <figure class="hero-reel__photo">
+        <Image src={skatePole} alt="" widths={[240, 360]} sizes="180px" loading="eager" />
+      </figure>
+    </div>
+  </Hero>
 
   <div id="below-hero"></div>
 
   <About />
 
   <StatsBand items={[...siteConfig.stats]} />
+
+  <!-- Video reel -->
+  <section class="section-pad">
+    <div class="container">
+      <SectionHeader
+        eyebrow="See it in action"
+        title="Anywhere you can party, we can pole."
+        description="Hotel suites, backyards, warehouses and festival stages — real LVPR setups around Las Vegas."
+      />
+    </div>
+    <div class="container reel" data-reveal-stagger>
+      {reel.map((r) => (
+        <figure class="reel__item">
+          <div class="reel__video"><VideoLoop name={r.name} label={`${r.title}: ${r.note}`} /></div>
+          <figcaption><strong>{r.title}</strong><span>{r.note}</span></figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
 
   <!-- Why LVPR -->
   <section class="section-pad">
@@ -119,6 +164,30 @@ const homeSchema = {
     <PricingTable />
   </section>
 
+  <!-- Hire a teacher -->
+  <section class="section-pad" style="padding-top: 0;">
+    <div class="container teacher" data-reveal>
+      <figure class="teacher__media">
+        <Image src={morningBlend} alt="Two pole instructors smiling beside a Lupit pole stage on the Las Vegas Morning Blend TV set" widths={[480, 720, 960]} sizes="(min-width: 900px) 460px, 100vw" />
+        <span class="teacher__badge"><strong>$80</strong>/hr</span>
+        <figcaption class="teacher__caption">As seen on <strong>Las Vegas Morning Blend</strong></figcaption>
+      </figure>
+      <div class="teacher__copy">
+        <p class="eyebrow">Add a teacher</p>
+        <h2>Don&rsquo;t know how to pole dance? <span class="text-gradient-hero">Hire a teacher!</span></h2>
+        <p class="teacher__price">Only <strong>$80/hr</strong></p>
+        <p class="teacher__body">
+          Add a professional pole instructor to your rental. They come to you and get the whole
+          group spinning, climbing and posing &mdash; no experience needed.
+        </p>
+        <div class="teacher__ctas">
+          <Button href={teacherSms} variant="primary" size="lg">Text to book a teacher</Button>
+          <Button href={siteConfig.phoneHref} variant="secondary" size="lg">Call {siteConfig.phoneDisplay}</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Testimonials grid -->
   <section class="section-pad" style="padding-top: 0;">
     <div class="container">
@@ -158,6 +227,102 @@ const homeSchema = {
 </BaseLayout>
 
 <style>
+  .teacher {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    align-items: center;
+    padding: clamp(20px, 4vw, 48px);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border-subtle);
+    background:
+      radial-gradient(ellipse at 100% 0%, color-mix(in oklab, var(--color-neon-magenta) 18%, transparent), transparent 60%),
+      radial-gradient(ellipse at 0% 100%, color-mix(in oklab, var(--color-neon-cyan) 12%, transparent), transparent 60%),
+      var(--color-surface);
+  }
+  @media (min-width: 900px) {
+    .teacher { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: var(--space-12); }
+  }
+  .teacher__media { position: relative; margin: 0; max-width: 460px; justify-self: center; width: 100%; }
+  .teacher__caption {
+    position: absolute; left: 12px; bottom: 12px;
+    padding: 6px 12px; border-radius: 999px;
+    background: rgba(10, 10, 15, 0.75); backdrop-filter: blur(8px);
+    color: var(--color-text-muted); font-size: var(--fs-xs);
+    letter-spacing: 0.04em;
+  }
+  .teacher__caption strong { color: var(--color-text); }
+
+  /* Hero video */
+  .hero-reel { position: relative; width: min(340px, 82vw); margin-inline: auto; }
+  .hero-reel__frame {
+    position: relative; aspect-ratio: 9 / 16; border-radius: 28px; overflow: hidden;
+    border: 2px solid color-mix(in oklab, var(--color-neon-magenta) 70%, white);
+    box-shadow: 0 0 0 6px rgba(10, 10, 15, 0.6), var(--glow-purple), 0 30px 80px rgba(0, 0, 0, 0.6);
+    transform: rotate(2.5deg);
+  }
+  .hero-reel__tag {
+    position: absolute; left: 12px; bottom: 12px;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 12px; border-radius: 999px;
+    background: rgba(10, 10, 15, 0.7); backdrop-filter: blur(8px);
+    color: #fff; font-size: var(--fs-xs); font-weight: var(--fw-semibold); letter-spacing: 0.04em;
+  }
+  .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #ff3b5c; box-shadow: 0 0 10px #ff3b5c; animation: live-pulse 1.6s ease-in-out infinite; }
+  @keyframes live-pulse { 50% { opacity: 0.35; } }
+  .hero-reel__photo {
+    position: absolute; left: -22%; bottom: 8%; width: 46%; margin: 0;
+    aspect-ratio: 3 / 4; border-radius: 16px; overflow: hidden;
+    border: 2px solid var(--color-neon-cyan); box-shadow: var(--glow-cyan, 0 0 24px rgba(34, 211, 238, 0.5));
+    transform: rotate(-6deg);
+  }
+  .hero-reel__photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 959px) { .hero-reel__photo { left: -8%; width: 40%; } }
+
+  /* Video reel */
+  .reel {
+    display: grid; gap: var(--space-5);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: var(--space-10);
+  }
+  .reel__item { margin: 0; }
+  .reel__video {
+    aspect-ratio: 9 / 16; border-radius: var(--radius-lg); overflow: hidden;
+    border: 1px solid var(--color-border-subtle);
+    transition: border-color var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard), transform var(--duration-base) var(--ease-standard);
+  }
+  .reel__item:hover .reel__video { border-color: var(--color-neon-purple); box-shadow: var(--glow-purple); transform: translateY(-4px); }
+  .reel__item figcaption { display: grid; gap: 2px; margin-top: var(--space-3); }
+  .reel__item figcaption strong { font-family: var(--font-display); font-size: var(--fs-lg); color: var(--color-text); }
+  .reel__item figcaption span { color: var(--color-text-muted); font-size: var(--fs-sm); }
+  @media (max-width: 900px) {
+    .reel {
+      grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 62%;
+      overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: var(--space-3);
+      scrollbar-width: none;
+    }
+    .reel::-webkit-scrollbar { display: none; }
+    .reel__item { scroll-snap-align: start; }
+  }
+  .teacher__media :global(img) {
+    width: 100%; height: auto; display: block;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--glow-purple);
+  }
+  .teacher__badge {
+    position: absolute; right: -10px; top: -14px;
+    padding: 10px 16px; border-radius: 999px;
+    background: var(--gradient-button); color: #fff;
+    font-size: var(--fs-sm); box-shadow: var(--glow-purple);
+    transform: rotate(6deg);
+  }
+  .teacher__badge strong { font-family: var(--font-display); font-size: var(--fs-2xl); line-height: 1; }
+  .teacher__copy h2 { margin: var(--space-2) 0 var(--space-3); }
+  .teacher__price { font-size: var(--fs-xl); color: var(--color-text); margin: 0 0 var(--space-3); }
+  .teacher__price strong { color: var(--color-neon-cyan); }
+  .teacher__body { color: var(--color-text-muted); max-width: 46ch; margin: 0 0 var(--space-6); }
+  .teacher__ctas { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
   .home-gallery-photo {
     width: 320px;
     aspect-ratio: 4/3;
