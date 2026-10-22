@@ -20,6 +20,17 @@ export const siteConfig = {
     url: 'https://www.polefitnessstudio.com',
     label: 'Owned by',
   },
+  // Fawnia's sister sites, listed in the footer.
+  family: [
+    { name: 'TASTE The Show', url: 'https://thecreatorie.github.io/thetasteshow/' },
+    { name: 'Pole Fitness Studio', url: 'https://www.polefitnessstudio.com' },
+    { name: 'Pole Fitness Online', url: 'https://www.polefitnessonline.com' },
+    { name: 'Officially Fawnia', url: 'https://www.officiallyfawnia.com' },
+    { name: 'Burlesque To Go', url: 'https://burlesquetogo.com' },
+    { name: 'Bachelorette Pole Parties', url: 'https://www.bachelorettepoledancingparties.com' },
+    { name: 'I Love Pole Because', url: 'https://ilovepolebecause.com' },
+    { name: 'The Melissa Foundation', url: 'https://themelissafoundation.org' },
+  ],
   socials: [
     {
       name: 'Instagram',
