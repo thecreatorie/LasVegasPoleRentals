@@ -23,6 +23,22 @@ User-agent: anthropic-ai
 Allow: /
 Disallow: /thanks/
 
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /thanks/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /thanks/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /thanks/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /thanks/
+
 User-agent: PerplexityBot
 Allow: /
 Disallow: /thanks/

@@ -68,7 +68,7 @@ const hasAside = Astro.slots.has('aside');
         {secondaryCtaLabel && secondaryCtaHref && <Button href={secondaryCtaHref} variant="secondary" size="lg">{secondaryCtaLabel}</Button>}
       </div>
     )}
-    <a href={siteConfig.phoneHref} class="hero__phone" aria-label={`Or call ${siteConfig.phoneDisplay} now`}>
+    <a href={siteConfig.phoneHref} class="hero__phone">
       <span>or text/call</span>
       <strong>{siteConfig.phoneDisplay}</strong>
     </a>
