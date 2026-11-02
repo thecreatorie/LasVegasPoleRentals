@@ -52,15 +52,13 @@ const galleryPageSchema = [
     <div class="container">
       <SectionHeader eyebrow="Hotels" title="Luxury suites & high-rises." />
       <ul class="gallery" data-reveal-stagger>
-        {hotelImages.map((img: MediaItem, i: number) => (
-          <li class={`gallery__item gallery__item--${i % 5}`}>
+        {hotelImages.map((img: MediaItem) => (
+          <li class="gallery__item">
             <figure>
               <img
-                src={cloudinaryUrl(img.publicId, { width: 768, crop: 'fill', gravity: 'auto' })}
+                src={cloudinaryUrl(img.publicId, { width: 768 })}
                 srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                width="768"
-                height="576"
                 alt={img.alt}
                 loading="lazy"
                 decoding="async"
@@ -77,15 +75,13 @@ const galleryPageSchema = [
     <div class="container">
       <SectionHeader eyebrow="Parties" title="Celebrations of every kind." />
       <ul class="gallery" data-reveal-stagger>
-        {partyImages.map((img: MediaItem, i: number) => (
-          <li class={`gallery__item gallery__item--${i % 5}`}>
+        {partyImages.map((img: MediaItem) => (
+          <li class="gallery__item">
             <figure>
               <img
-                src={cloudinaryUrl(img.publicId, { width: 768, crop: 'fill', gravity: 'auto' })}
+                src={cloudinaryUrl(img.publicId, { width: 768 })}
                 srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                width="768"
-                height="576"
                 alt={img.alt}
                 loading="lazy"
                 decoding="async"
@@ -102,15 +98,13 @@ const galleryPageSchema = [
     <div class="container">
       <SectionHeader eyebrow="Venues" title="Clubs, restaurants & event spaces." />
       <ul class="gallery" data-reveal-stagger>
-        {venueImages.map((img: MediaItem, i: number) => (
-          <li class={`gallery__item gallery__item--${i % 5}`}>
+        {venueImages.map((img: MediaItem) => (
+          <li class="gallery__item">
             <figure>
               <img
-                src={cloudinaryUrl(img.publicId, { width: 768, crop: 'fill', gravity: 'auto' })}
+                src={cloudinaryUrl(img.publicId, { width: 768 })}
                 srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                width="768"
-                height="576"
                 alt={img.alt}
                 loading="lazy"
                 decoding="async"
@@ -127,15 +121,13 @@ const galleryPageSchema = [
     <div class="container">
       <SectionHeader eyebrow="Outdoor" title="Rooftops, pools & open sky." />
       <ul class="gallery" data-reveal-stagger>
-        {outdoorImages.map((img: MediaItem, i: number) => (
-          <li class={`gallery__item gallery__item--${i % 5}`}>
+        {outdoorImages.map((img: MediaItem) => (
+          <li class="gallery__item">
             <figure>
               <img
-                src={cloudinaryUrl(img.publicId, { width: 768, crop: 'fill', gravity: 'auto' })}
+                src={cloudinaryUrl(img.publicId, { width: 768 })}
                 srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                width="768"
-                height="576"
                 alt={img.alt}
                 loading="lazy"
                 decoding="async"
@@ -152,15 +144,13 @@ const galleryPageSchema = [
     <div class="container">
       <SectionHeader eyebrow="Performances" title="Live shows & entertainment." />
       <ul class="gallery" data-reveal-stagger>
-        {performanceImages.map((img: MediaItem, i: number) => (
-          <li class={`gallery__item gallery__item--${i % 5}`}>
+        {performanceImages.map((img: MediaItem) => (
+          <li class="gallery__item">
             <figure>
               <img
-                src={cloudinaryUrl(img.publicId, { width: 768, crop: 'fill', gravity: 'auto' })}
+                src={cloudinaryUrl(img.publicId, { width: 768 })}
                 srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                width="768"
-                height="576"
                 alt={img.alt}
                 loading="lazy"
                 decoding="async"
@@ -177,15 +167,13 @@ const galleryPageSchema = [
     <div class="container">
       <SectionHeader eyebrow="Editorial" title="Creative shoots & promotion." />
       <ul class="gallery" data-reveal-stagger>
-        {editorialImages.map((img: MediaItem, i: number) => (
-          <li class={`gallery__item gallery__item--${i % 5}`}>
+        {editorialImages.map((img: MediaItem) => (
+          <li class="gallery__item">
             <figure>
               <img
-                src={cloudinaryUrl(img.publicId, { width: 768, crop: 'fill', gravity: 'auto' })}
+                src={cloudinaryUrl(img.publicId, { width: 768 })}
                 srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                width="768"
-                height="576"
                 alt={img.alt}
                 loading="lazy"
                 decoding="async"
@@ -256,16 +244,19 @@ const galleryPageSchema = [
     list-style: none;
     padding: 0;
     margin: 0;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
+    columns: 1;
+    column-gap: var(--space-4);
   }
-  @media (min-width: 640px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 1024px) { .gallery { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 640px) { .gallery { columns: 2; } }
+  @media (min-width: 1024px) { .gallery { columns: 3; } }
+
+  .gallery__item {
+    break-inside: avoid;
+    margin-bottom: var(--space-4);
+  }
 
   .gallery__item figure {
     margin: 0;
-    aspect-ratio: 4 / 3;
     border-radius: var(--radius-lg);
     overflow: hidden;
     background: var(--color-surface);
@@ -276,8 +267,8 @@ const galleryPageSchema = [
   }
   .gallery__item figure img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    display: block;
     transition: transform var(--duration-slow) var(--ease-standard);
     filter: saturate(1.1) contrast(1.03);
   }
@@ -287,12 +278,6 @@ const galleryPageSchema = [
   }
   .gallery__item figure:hover img {
     transform: scale(1.06);
-  }
-
-  @media (min-width: 1024px) {
-    .gallery__item--0 figure,
-    .gallery__item--3 figure { aspect-ratio: 3 / 4; }
-    .gallery__item--1 figure { aspect-ratio: 4 / 3; }
   }
 
   .gallery-category {
