@@ -201,20 +201,20 @@ function altFor(publicId: string) {
         description="Real setups in real Las Vegas spaces &mdash; hotel suites, event venues, private homes."
       />
     </div>
-    <Marquee speed={42} ariaLabel="Photo gallery row 1">
+    <Marquee speed={45} ariaLabel="Photo gallery row 1">
       {marqueeRow1.map((id) => (
         <figure class="home-gallery-photo">
           <img
             src={`https://res.cloudinary.com/wb2a64ho/image/upload/h_360,c_scale,q_auto,f_auto/${id}.jpg`}
             alt={altFor(id)}
-            loading="lazy"
+            loading="eager"
             decoding="async"
           />
         </figure>
       ))}
     </Marquee>
     <div style="height: var(--space-5)"></div>
-    <Marquee speed={56} reverse={true} ariaLabel="Photo gallery row 2">
+    <Marquee speed={45} reverse={true} ariaLabel="Photo gallery row 2">
       {marqueeRow2.map((id) => (
         <figure class="home-gallery-photo">
           <img
