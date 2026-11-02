@@ -33,9 +33,9 @@ const homeSchema = {
 
 const venueShowcase = [
   { title: 'Hotel Suites',    desc: 'Penthouses, suites & high-rises', publicId: 'Photo_Jul_11_2024_11_09_06_PM', alt: 'Pole stage in a hotel room with Las Vegas Strip lights through the window' },
-  { title: 'Private Parties',  desc: 'Bachelorettes, birthdays & more', publicId: 'Photo_Jun_26_2026_6_29_45_PM', alt: 'Bachelorette party group posing with a rented pole in a Las Vegas hotel suite' },
+  { title: 'Private Parties',  desc: 'Bachelorettes, birthdays & more', publicId: 'Photo_May_03_2024_5_18_30_PM', alt: 'Las Vegas bachelorette party suite with pink balloons, disco ball, and pole' },
   { title: 'Event Venues',    desc: 'Clubs, restaurants & banquets',   publicId: 'Photo_Mar_08_2024_4_43_36_PM', alt: 'Pole stage set up in a restaurant banquet hall for a private event' },
-  { title: 'Outdoor & Pool',  desc: 'Backyards, rooftops & poolside',  publicId: 'Photo_Oct_21_2026_8_19_22_PM', alt: 'Pole stage by a luxury pool with blue LED lighting at night' },
+  { title: 'Outdoor & Pool',  desc: 'Backyards, rooftops & poolside',  publicId: 'Photo_Jun_28_2026_9_57_36_AM', alt: 'Pole stage set up poolside in a Las Vegas backyard' },
 ];
 
 const marqueeRow1 = [
@@ -69,14 +69,14 @@ function altFor(publicId: string) {
   title={`Rent a Stripper Pole in Las Vegas | ${siteConfig.name}`}
   description={siteConfig.description}
   schema={homeSchema}
-  preloadImage={cloudinaryUrl('Photo_Mar_13_2025_6_25_19_PM', { width: 1280 })}
+  preloadImage={cloudinaryUrl('Photo_Mar_16_2024_7_28_06_AM', { width: 1280 })}
 >
   <!-- Hero -->
   <section class="hero hero--full">
     <div class="hero__media" aria-hidden="true">
       <img
-        src={cloudinaryUrl('Photo_Mar_13_2025_6_25_19_PM', { width: 1920 })}
-        srcset={cloudinarySrcset('Photo_Mar_13_2025_6_25_19_PM', [768, 1280, 1920, 2400])}
+        src={cloudinaryUrl('Photo_Mar_16_2024_7_28_06_AM', { width: 1920 })}
+        srcset={cloudinarySrcset('Photo_Mar_16_2024_7_28_06_AM', [768, 1280, 1920, 2400])}
         sizes="100vw"
         alt=""
         loading="eager"
@@ -162,11 +162,11 @@ function altFor(publicId: string) {
       {venueShowcase.map((v) => (
         <a href="/view-photos/" class="venue-card">
           <img
-            src={cloudinaryUrl(v.publicId, { width: 600, height: 400, crop: 'fill', gravity: 'auto' })}
-            srcset={`${cloudinaryUrl(v.publicId, { width: 400, height: 267, crop: 'fill', gravity: 'auto' })} 400w, ${cloudinaryUrl(v.publicId, { width: 600, height: 400, crop: 'fill', gravity: 'auto' })} 600w, ${cloudinaryUrl(v.publicId, { width: 800, height: 533, crop: 'fill', gravity: 'auto' })} 800w`}
+            src={cloudinaryUrl(v.publicId, { width: 400, height: 533, crop: 'fill', gravity: 'auto' })}
+            srcset={`${cloudinaryUrl(v.publicId, { width: 300, height: 400, crop: 'fill', gravity: 'auto' })} 300w, ${cloudinaryUrl(v.publicId, { width: 400, height: 533, crop: 'fill', gravity: 'auto' })} 400w, ${cloudinaryUrl(v.publicId, { width: 600, height: 800, crop: 'fill', gravity: 'auto' })} 600w`}
             sizes="(min-width: 900px) 25vw, (min-width: 640px) 50vw, 100vw"
-            width="600"
-            height="400"
+            width="400"
+            height="533"
             alt={v.alt}
             loading="lazy"
             decoding="async"
@@ -244,12 +244,12 @@ function altFor(publicId: string) {
     <div class="container teacher" data-reveal>
       <figure class="teacher__media">
         <img
-          src={cloudinaryUrl('Photo_Jul_23_2025_9_54_58_PM', { width: 720, height: 960, crop: 'fill', gravity: 'auto' })}
-          srcset={`${cloudinaryUrl('Photo_Jul_23_2025_9_54_58_PM', { width: 480, height: 640, crop: 'fill', gravity: 'auto' })} 480w, ${cloudinaryUrl('Photo_Jul_23_2025_9_54_58_PM', { width: 720, height: 960, crop: 'fill', gravity: 'auto' })} 720w, ${cloudinaryUrl('Photo_Jul_23_2025_9_54_58_PM', { width: 960, height: 1280, crop: 'fill', gravity: 'auto' })} 960w`}
+          src={cloudinaryUrl('Photo_Apr_08_2025_8_53_30_AM', { width: 720, height: 960, crop: 'fill', gravity: 'auto' })}
+          srcset={`${cloudinaryUrl('Photo_Apr_08_2025_8_53_30_AM', { width: 480, height: 640, crop: 'fill', gravity: 'auto' })} 480w, ${cloudinaryUrl('Photo_Apr_08_2025_8_53_30_AM', { width: 720, height: 960, crop: 'fill', gravity: 'auto' })} 720w, ${cloudinaryUrl('Photo_Apr_08_2025_8_53_30_AM', { width: 960, height: 1280, crop: 'fill', gravity: 'auto' })} 960w`}
           sizes="(min-width: 900px) 460px, 100vw"
           width="720"
           height="960"
-          alt="Group of performers around a pole at an upscale Las Vegas venue"
+          alt="Fawnia Mondey on the Las Vegas Morning Blend TV show"
           loading="lazy"
           decoding="async"
         />
@@ -547,7 +547,7 @@ function altFor(publicId: string) {
     display: block;
     border-radius: var(--radius-lg);
     overflow: hidden;
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 3 / 4;
     text-decoration: none;
     background: var(--color-surface);
     box-shadow: var(--shadow-md);

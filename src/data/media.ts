@@ -95,6 +95,9 @@ export const images: MediaItem[] = [
   // ── PRODUCTION SCALE ────────────────────────────────────────────────
   { publicId: 'Photo_Mar_16_2024_7_28_06_AM', alt: 'Multiple pole stages lined up backstage at a major Las Vegas concert', category: 'production', featured: true },
   { publicId: 'Photo_May_04_2024_7_16_23_PM', alt: 'Pole stage in an elegant banquet hall with ornate mirror and crystal vases', category: 'venue' },
+
+  // ── MEDIA / TV ─────────────────────────────────────────────────────────
+  { publicId: 'Photo_Apr_08_2025_8_53_30_AM', alt: 'Fawnia Mondey on the Las Vegas Morning Blend TV show', category: 'performance' },
 ];
 
 export const videos = [
@@ -102,7 +105,7 @@ export const videos = [
   { publicId: 'Video_Aug_05_2020_9_09_26_PM', alt: 'Pole stage rental setup video' },
 ];
 
-export const heroImage = images.find((i) => i.publicId === 'Photo_Mar_13_2025_6_25_19_PM')!;
+export const heroImage = images.find((i) => i.publicId === 'Photo_Mar_16_2024_7_28_06_AM')!;
 export const heroPerformer = images.find((i) => i.publicId === 'Photo_Jul_23_2025_9_55_18_PM')!;
 
 export function byCategory(cat: MediaItem['category']) {
