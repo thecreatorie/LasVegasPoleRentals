@@ -4,19 +4,24 @@ import SectionHeader from '../components/SectionHeader.astro';
 import FeatureGrid from '../components/FeatureGrid.astro';
 import PricingTable from '../components/PricingTable.astro';
 import Button from '../components/Button.astro';
-import { Image } from 'astro:assets';
 import { siteConfig } from '../site.config';
 import { breadcrumbList } from '../lib/breadcrumbs';
-import pole2 from '../assets/images/pole2.jpg';
-import pole3 from '../assets/images/pole3.jpg';
+import { cloudinaryUrl, cloudinarySrcset } from '../data/media';
 
 const specs = [
-  { icon: 'ruler',  title: '8’4”, 9\' or 9’8” poles',  body: 'Measure your ceiling and we’ll bring the right height for your space.' },
+  { icon: 'ruler',  title: '8’4″, 9’ or 9’8″ poles',  body: 'Measure your ceiling and we’ll bring the right height for your space.' },
   { icon: 'rotate', title: 'Static or spin',       body: 'Lupit Quick Lock™ — change modes mid-performance with a turn of the locking ring. No tools.' },
   { icon: 'shield', title: '180 lb weight limit',  body: 'Built to safely hold up to 180 lbs (80 kg). Long-leg option adds stability for heavier performers.' },
-  { icon: 'ruler',  title: '5’3” stage diameter',  body: 'Stage needs ~5’10” clear space. Six legs with anti-slip surfaces, rigid construction.' },
+  { icon: 'ruler',  title: '5’3″ stage diameter',  body: 'Stage needs ~5’10″ clear space. Six legs with anti-slip surfaces, rigid construction.' },
   { icon: 'clock',  title: '5–10 minute setup',    body: 'Our technician handles assembly and teardown. You don’t lift a thing.' },
   { icon: 'star',   title: '45 mm steel pole',     body: 'Stainless steel and chrome options available, both silver, visually identical. Tell us if you have a metal allergy.' },
+];
+
+const showcaseImages = [
+  { publicId: 'Photo_Oct_21_2026_8_28_37_PM', alt: 'Portable pole in a luxury mansion living room with crystal chandeliers' },
+  { publicId: 'Photo_May_04_2024_7_16_23_PM', alt: 'Bachelorette party suite with pink balloon arch and pole stage' },
+  { publicId: 'Photo_Oct_21_2026_8_19_22_PM', alt: 'Pole stage by a luxury pool with blue LED lighting at night' },
+  { publicId: 'Photo_Jan_25_2024_5_43_14_AM', alt: 'Pole stage at a Las Vegas nightclub venue with professional lighting' },
 ];
 
 const productSchema = {
@@ -24,7 +29,7 @@ const productSchema = {
   '@type': 'Product',
   name: 'Portable Lupit Pole Stage Rental',
   description:
-    'Rent a Lupit portable pole dance stage in Las Vegas. Delivered, set up, and picked up. Spin/static, 8’4”, 9\' or 9’8” heights, 5’3” stage diameter, 180 lb weight limit.',
+    'Rent a Lupit portable pole dance stage in Las Vegas. Delivered, set up, and picked up. Spin/static, 8’4″, 9’ or 9’8″ heights, 5’3″ stage diameter, 180 lb weight limit.',
   brand: { '@type': 'Brand', name: 'Lupit Pole' },
   offers: {
     '@type': 'Offer',
@@ -55,7 +60,7 @@ const pageSchema = [
   intro="State-of-the-art Lupit pole stages — same-day service across Las Vegas, Henderson, and Summerlin. Spin or static, set up in 10 minutes."
   schema={pageSchema}
 >
-  <!-- Phone-first CTA strip (merged from /rentapole/ conversion page) -->
+  <!-- Phone-first CTA strip -->
   <section class="phone-strip" data-reveal>
     <div class="container phone-strip__inner">
       <div>
@@ -87,11 +92,56 @@ const pageSchema = [
   <section class="section-pad" style="padding-top: 0;" data-reveal>
     <div class="container product-proof">
       <figure>
-        <Image src={pole2} alt="Lupit pole stage installed in a Las Vegas event space" widths={[480, 768, 1024]} sizes="(min-width: 768px) 50vw, 100vw" />
+        <img
+          src={cloudinaryUrl('Photo_Sep_16_2022_1_44_53_PM', { width: 768, crop: 'fill', gravity: 'auto' })}
+          srcset={cloudinarySrcset('Photo_Sep_16_2022_1_44_53_PM', [480, 768, 1024])}
+          sizes="(min-width: 768px) 50vw, 100vw"
+          width="768"
+          height="576"
+          alt="Pole stage set up in an elegant boutique hotel suite"
+          loading="lazy"
+          decoding="async"
+        />
       </figure>
       <figure>
-        <Image src={pole3} alt="Portable pole stage ready for a private event" widths={[480, 768, 1024]} sizes="(min-width: 768px) 50vw, 100vw" />
+        <img
+          src={cloudinaryUrl('Photo_Mar_08_2024_4_43_36_PM', { width: 768, crop: 'fill', gravity: 'auto' })}
+          srcset={cloudinarySrcset('Photo_Mar_08_2024_4_43_36_PM', [480, 768, 1024])}
+          sizes="(min-width: 768px) 50vw, 100vw"
+          width="768"
+          height="576"
+          alt="Pole stage set up in a restaurant banquet hall for a private event"
+          loading="lazy"
+          decoding="async"
+        />
       </figure>
+    </div>
+  </section>
+
+  <!-- Real Setups showcase -->
+  <section class="section-pad" style="padding-top: 0;">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Real setups"
+        title="See where we deliver."
+        description="Mansions, bachelorette suites, poolside at night, nightclub stages — we set up everywhere."
+      />
+      <div class="showcase" data-reveal-stagger>
+        {showcaseImages.map((img) => (
+          <figure class="showcase__item">
+            <img
+              src={cloudinaryUrl(img.publicId, { width: 480, height: 640, crop: 'fill', gravity: 'auto' })}
+              srcset={`${cloudinaryUrl(img.publicId, { width: 320, height: 427, crop: 'fill', gravity: 'auto' })} 320w, ${cloudinaryUrl(img.publicId, { width: 480, height: 640, crop: 'fill', gravity: 'auto' })} 480w`}
+              sizes="(min-width: 900px) 25vw, 65vw"
+              width="480"
+              height="640"
+              alt={img.alt}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -173,7 +223,41 @@ const pageSchema = [
     aspect-ratio: 4/3;
     background: var(--color-surface);
   }
-  .product-proof :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .product-proof img { width: 100%; height: 100%; object-fit: cover; }
+
+  .showcase {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: var(--space-8);
+  }
+  .showcase__item {
+    margin: 0;
+    aspect-ratio: 3/4;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--color-surface);
+    position: relative;
+  }
+  .showcase__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-base) var(--ease-standard);
+  }
+  .showcase__item:hover img { transform: scale(1.05); }
+  @media (max-width: 900px) {
+    .showcase {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 65%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+    .showcase::-webkit-scrollbar { display: none; }
+    .showcase__item { scroll-snap-align: start; }
+  }
 
   .final-cta { text-align: center; max-width: 720px; }
   .final-cta p {

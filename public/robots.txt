@@ -63,4 +63,32 @@ User-agent: Bytespider
 Allow: /
 Disallow: /thanks/
 
+User-agent: meta-externalagent
+Allow: /
+Disallow: /thanks/
+
+User-agent: Amazonbot
+Allow: /
+Disallow: /thanks/
+
+User-agent: cohere-ai
+Allow: /
+Disallow: /thanks/
+
+User-agent: Gemini
+Allow: /
+Disallow: /thanks/
+
+User-agent: Google-InternalOlympus
+Allow: /
+Disallow: /thanks/
+
+User-agent: Timesbot
+Allow: /
+Disallow: /thanks/
+
+User-agent: YouBot
+Allow: /
+Disallow: /thanks/
+
 Sitemap: https://lasvegaspolerentals.com/sitemap.xml
