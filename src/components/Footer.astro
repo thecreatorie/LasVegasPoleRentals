@@ -6,8 +6,9 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-brand">
-      <a href="/" class="footer-logo" aria-label={`LVPR — ${siteConfig.name} home`}>
-        <span class="wordmark">LVPR</span>
+      <a href="/" class="footer-logo" aria-label={`${siteConfig.name} home`}>
+        <img src="/logo.webp" alt="" class="footer-logo__icon" width="64" height="64" />
+        <span class="wordmark">Las Vegas Pole Rentals</span>
       </a>
       <p class="tagline">Portable Lupit pole stages, delivered and set up across Las Vegas. Same-day service available.</p>
       <div class="footer-contact">
@@ -100,17 +101,26 @@ const year = new Date().getFullYear();
   }
 
   .footer-logo {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
     color: var(--color-ink);
     text-decoration: none;
     background: none;
     margin-bottom: var(--space-4);
   }
+  .footer-logo__icon {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
   .footer-logo .wordmark {
     font-family: var(--font-display);
-    font-size: var(--fs-3xl);
+    font-size: var(--fs-2xl);
     font-weight: var(--fw-bold);
-    letter-spacing: 0.18em;
+    letter-spacing: 0.06em;
+    line-height: 1.15;
   }
   .tagline {
     margin: 0 0 var(--space-6) 0;

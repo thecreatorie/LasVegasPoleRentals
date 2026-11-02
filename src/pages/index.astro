@@ -10,7 +10,7 @@ import Testimonial from '../components/Testimonial.astro';
 import Button from '../components/Button.astro';
 import { siteConfig } from '../site.config';
 import { testimonials } from '../data/testimonials';
-import { cloudinaryUrl, cloudinarySrcset, images } from '../data/media';
+import { cloudinaryUrl, cloudinarySrcset, cloudinaryVideoUrl, cloudinaryVideoPoster, images, videos } from '../data/media';
 
 const features = [
   { icon: 'bolt',   title: 'Lupit Quick Lock™', body: 'Spin to static in under a second. No allen wrenches, no screws — just turn the locking ring at the base.' },
@@ -33,9 +33,9 @@ const homeSchema = {
 
 const venueShowcase = [
   { title: 'Hotel Suites',    desc: 'Penthouses, suites & high-rises', publicId: 'Photo_Jul_11_2024_11_09_06_PM', alt: 'Pole stage in a hotel room with Las Vegas Strip lights through the window' },
-  { title: 'Private Parties',  desc: 'Bachelorettes, birthdays & more', publicId: 'Photo_May_03_2024_5_18_30_PM', alt: 'Las Vegas bachelorette party suite with pink balloons, disco ball, and pole' },
+  { title: 'Private Parties',  desc: 'Bachelorettes, birthdays & more', publicId: 'Photo_Jan_24_2026_6_10_30_PM', alt: 'House party with pole stage under colorful UV party lighting' },
   { title: 'Event Venues',    desc: 'Clubs, restaurants & banquets',   publicId: 'Photo_Mar_08_2024_4_43_36_PM', alt: 'Pole stage set up in a restaurant banquet hall for a private event' },
-  { title: 'Outdoor & Pool',  desc: 'Backyards, rooftops & poolside',  publicId: 'Photo_Jun_28_2026_9_57_36_AM', alt: 'Pole stage set up poolside in a Las Vegas backyard' },
+  { title: 'Outdoor & Pool',  desc: 'Backyards, rooftops & poolside',  publicId: 'Photo_Oct_21_2026_8_19_22_PM', alt: 'Pole stage by a luxury pool with blue LED lighting at night' },
 ];
 
 const marqueeRow1 = [
@@ -228,6 +228,33 @@ function altFor(publicId: string) {
     </Marquee>
     <div class="container" style="text-align: center; margin-top: var(--space-10);">
       <Button href="/view-photos/" variant="secondary" size="lg">See full gallery</Button>
+    </div>
+  </section>
+
+  <!-- Video showcase -->
+  <section class="section-pad" style="padding-top: 0;">
+    <div class="container">
+      <SectionHeader
+        eyebrow="See It in Action"
+        title="Watch the magic happen."
+        description="Real pole performances and setup — see what a rental looks like."
+      />
+      <div class="video-grid">
+        {videos.map((v) => (
+          <div class="video-card">
+            <video
+              src={cloudinaryVideoUrl(v.publicId, { width: 720 })}
+              poster={cloudinaryVideoPoster(v.publicId, 720)}
+              controls
+              preload="none"
+              playsinline
+              muted
+            >
+              <p>{v.alt}</p>
+            </video>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -632,6 +659,29 @@ function altFor(publicId: string) {
   .teacher__price strong { color: var(--color-neon-cyan); }
   .teacher__body { color: var(--color-text-muted); max-width: 46ch; margin: 0 0 var(--space-6); }
   .teacher__ctas { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+  /* ── Video showcase ──────────────────────────────────────────────────── */
+  .video-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    margin-top: var(--space-8);
+  }
+  @media (min-width: 768px) {
+    .video-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .video-card {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border-subtle);
+  }
+  .video-card video {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
 
   /* ── Gallery marquee ────────────────────────────────────────────────── */
   .home-gallery-photo {
