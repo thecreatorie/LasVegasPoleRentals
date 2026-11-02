@@ -74,7 +74,10 @@ const year = new Date().getFullYear();
 <style>
   .site-footer {
     position: relative;
-    background: var(--color-surface);
+    background:
+      radial-gradient(ellipse at 0% 0%, color-mix(in oklab, #a855f7 10%, transparent), transparent 50%),
+      radial-gradient(ellipse at 100% 100%, color-mix(in oklab, #ec4899 8%, transparent), transparent 50%),
+      var(--color-surface);
     border-top: 1px solid var(--color-border-subtle);
     padding-block: var(--space-section) var(--space-8);
     margin-top: var(--space-section);
@@ -86,9 +89,9 @@ const year = new Date().getFullYear();
     top: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    background: var(--gradient-neon-sweep);
-    opacity: 0.5;
+    height: 2px;
+    background: linear-gradient(90deg, #22d3ee 0%, #a855f7 40%, #ec4899 100%);
+    opacity: 0.7;
   }
 
   .footer-grid {
@@ -110,19 +113,19 @@ const year = new Date().getFullYear();
     margin-bottom: var(--space-4);
   }
   .footer-logo__icon {
-    width: 72px;
-    height: 72px;
+    width: 110px;
+    height: 110px;
     object-fit: contain;
     flex-shrink: 0;
     -webkit-mask-image: radial-gradient(circle, #000 45%, transparent 72%);
     mask-image: radial-gradient(circle, #000 45%, transparent 72%);
   }
   .footer-logo .wordmark {
-    font-family: var(--font-display);
-    font-size: var(--fs-2xl);
-    font-weight: var(--fw-bold);
-    letter-spacing: 0.14em;
-    line-height: 1.15;
+    font-family: var(--font-body);
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-medium);
+    letter-spacing: 0.02em;
+    line-height: 1.3;
     text-transform: uppercase;
   }
   .tagline {

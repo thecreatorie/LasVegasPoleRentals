@@ -686,7 +686,6 @@ function altFor(publicId: string) {
   /* ── Gallery marquee ────────────────────────────────────────────────── */
   .home-gallery-photo {
     height: 320px;
-    min-width: 420px;
     flex-shrink: 0;
     margin: 0;
     border-radius: var(--radius-lg);
@@ -698,6 +697,7 @@ function altFor(publicId: string) {
     height: 100%;
     width: auto;
     display: block;
+    object-fit: cover;
     transition: transform var(--duration-base) var(--ease-standard);
   }
   .home-gallery-photo:hover img { transform: scale(1.05); }
