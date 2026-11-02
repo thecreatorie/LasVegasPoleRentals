@@ -1,12 +1,7 @@
 ---
-/**
- * About-strip used on the homepage. Two-column: text on left, image on right.
- * Image uses the curtain-wipe reveal from the design system.
- */
-import { Image } from 'astro:assets';
 import Button from './Button.astro';
 import { siteConfig } from '../site.config';
-import pole from '../assets/images/pole2.jpg';
+import { cloudinaryUrl, cloudinarySrcset } from '../data/media';
 ---
 
 <section class="about" data-reveal>
@@ -21,7 +16,7 @@ import pole from '../assets/images/pole2.jpg';
           Best rates. Best product. Best service. We bring the stage to you.
         </p>
         <p>
-          Need a pole today? <strong>Same-day service</strong> — professional setup, professional
+          Need a pole today? <strong>Same-day service</strong> &mdash; professional setup, professional
           teardown, insurance included. We use <strong>Lupit Poles</strong>, the gold standard:
           spin to static in under a second, no allen wrenches, no screws.
         </p>
@@ -35,15 +30,17 @@ import pole from '../assets/images/pole2.jpg';
           <Button href={siteConfig.phoneHref} variant="secondary" size="lg">Call {siteConfig.phoneDisplay}</Button>
         </div>
         <p class="about__owner">
-          Owned by <a href={siteConfig.parentBrand.url} target="_blank" rel="noopener noreferrer">{siteConfig.parentBrand.name}</a> · Founder Fawnia Mondey, in the pole industry since 1994.
+          Owned by <a href={siteConfig.parentBrand.url} target="_blank" rel="noopener noreferrer">{siteConfig.parentBrand.name}</a> &middot; Founder Fawnia Mondey, in the pole industry since 1994.
         </p>
       </div>
       <figure class="about__media picture--reveal" data-reveal>
-        <Image
-          src={pole}
-          alt="Lupit pole stage set up at a Las Vegas venue with neon ambient lighting"
-          widths={[480, 768, 1024]}
+        <img
+          src={cloudinaryUrl('Photo_Oct_21_2026_8_28_37_PM', { width: 768, crop: 'fill', gravity: 'auto' })}
+          srcset={cloudinarySrcset('Photo_Oct_21_2026_8_28_37_PM', [480, 768, 1024])}
           sizes="(min-width: 900px) 50vw, 100vw"
+          alt="Portable pole stage in a luxury mansion living room with crystal chandeliers"
+          loading="lazy"
+          decoding="async"
         />
       </figure>
     </div>
@@ -105,7 +102,7 @@ import pole from '../assets/images/pole2.jpg';
     background: var(--color-surface);
     position: relative;
   }
-  .about__media :global(img) {
+  .about__media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
