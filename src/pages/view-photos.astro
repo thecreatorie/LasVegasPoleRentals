@@ -1,27 +1,18 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import Button from '../components/Button.astro';
-import { Image } from 'astro:assets';
+import SectionHeader from '../components/SectionHeader.astro';
 import { siteConfig } from '../site.config';
 import { breadcrumbList } from '../lib/breadcrumbs';
-import pole1 from '../assets/images/pole1.jpg';
-import pole2 from '../assets/images/pole2.jpg';
-import pole3 from '../assets/images/pole3.jpg';
-import pole4 from '../assets/images/pole4.jpg';
-import pole5 from '../assets/images/pole5.jpg';
-import img6 from '../assets/images/img6.jpg';
-import img6082 from '../assets/images/img_6082_768x1024.jpg';
+import { cloudinaryUrl, cloudinarySrcset, byCategory } from '../data/media';
+import type { MediaItem } from '../data/media';
 
-// Each image carries an honest alt — descriptive of what's in frame, not stuffed with keywords.
-const photos = [
-  { src: pole1,   alt: 'Lupit pole stage with neon purple and cyan stage lighting in a low-lit venue' },
-  { src: pole2,   alt: 'Portable pole stage installed in a Las Vegas event space' },
-  { src: pole3,   alt: 'Lupit pole stage ready for a private event' },
-  { src: pole4,   alt: 'Pole stage set up in a hotel suite' },
-  { src: pole5,   alt: 'Pole rental setup for a private party' },
-  { src: img6,    alt: 'Pole stage at a Las Vegas Pole Rentals delivery' },
-  { src: img6082, alt: 'Pole stage installed for a customer' },
-];
+const hotelImages = [...byCategory('hero'), ...byCategory('hotel')];
+const partyImages = byCategory('party');
+const venueImages = byCategory('venue');
+const outdoorImages = byCategory('outdoor');
+const performanceImages = byCategory('performance');
+const editorialImages = [...byCategory('editorial'), ...byCategory('production')];
 
 const galleryPageSchema = [
   {
@@ -40,20 +31,37 @@ const galleryPageSchema = [
   description="See our portable Lupit pole stages in real Las Vegas venues — hotel suites, event spaces, private homes. The same stage we'll bring to you."
   eyebrow="Gallery"
   heading="Pole stages in the wild."
-  intro="We can set up inside and outside. Hotel suites, event venues, private homes — anywhere in the Las Vegas Valley."
+  intro="Hotel suites, event venues, private homes, rooftops, pool parties — anywhere in the Las Vegas Valley. All photos are real LVPR setups."
   schema={galleryPageSchema}
 >
-  <section class="section-pad">
+  <nav class="gallery-nav" aria-label="Gallery categories">
     <div class="container">
+      <div class="gallery-nav__pills">
+        <a href="#hotels" class="pill">Hotels</a>
+        <a href="#parties" class="pill">Parties &amp; Events</a>
+        <a href="#venues" class="pill">Venues</a>
+        <a href="#outdoor" class="pill">Outdoor</a>
+        <a href="#performances" class="pill">Performances</a>
+        <a href="#editorial" class="pill">Editorial</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hotels -->
+  <section id="hotels" class="gallery-category section-pad">
+    <div class="container">
+      <SectionHeader eyebrow="Hotels" title="Luxury suites & high-rises." />
       <ul class="gallery" data-reveal-stagger>
-        {photos.map((p, i) => (
+        {hotelImages.map((img: MediaItem, i: number) => (
           <li class={`gallery__item gallery__item--${i % 5}`}>
             <figure>
-              <Image
-                src={p.src}
-                alt={p.alt}
-                widths={[480, 768, 1280]}
+              <img
+                src={cloudinaryUrl(img.publicId, { width: 768, crop: 'fill', gravity: 'auto' })}
+                srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                alt={img.alt}
+                loading="lazy"
+                decoding="async"
               />
             </figure>
           </li>
@@ -62,10 +70,126 @@ const galleryPageSchema = [
     </div>
   </section>
 
+  <!-- Parties & Events -->
+  <section id="parties" class="gallery-category section-pad">
+    <div class="container">
+      <SectionHeader eyebrow="Parties" title="Celebrations of every kind." />
+      <ul class="gallery" data-reveal-stagger>
+        {partyImages.map((img: MediaItem, i: number) => (
+          <li class={`gallery__item gallery__item--${i % 5}`}>
+            <figure>
+              <img
+                src={cloudinaryUrl(img.publicId, { width: 768, crop: 'fill', gravity: 'auto' })}
+                srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                alt={img.alt}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Venues -->
+  <section id="venues" class="gallery-category section-pad">
+    <div class="container">
+      <SectionHeader eyebrow="Venues" title="Clubs, restaurants & event spaces." />
+      <ul class="gallery" data-reveal-stagger>
+        {venueImages.map((img: MediaItem, i: number) => (
+          <li class={`gallery__item gallery__item--${i % 5}`}>
+            <figure>
+              <img
+                src={cloudinaryUrl(img.publicId, { width: 768, crop: 'fill', gravity: 'auto' })}
+                srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                alt={img.alt}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Outdoor -->
+  <section id="outdoor" class="gallery-category section-pad">
+    <div class="container">
+      <SectionHeader eyebrow="Outdoor" title="Rooftops, pools & open sky." />
+      <ul class="gallery" data-reveal-stagger>
+        {outdoorImages.map((img: MediaItem, i: number) => (
+          <li class={`gallery__item gallery__item--${i % 5}`}>
+            <figure>
+              <img
+                src={cloudinaryUrl(img.publicId, { width: 768, crop: 'fill', gravity: 'auto' })}
+                srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                alt={img.alt}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Performances -->
+  <section id="performances" class="gallery-category section-pad">
+    <div class="container">
+      <SectionHeader eyebrow="Performances" title="Live shows & entertainment." />
+      <ul class="gallery" data-reveal-stagger>
+        {performanceImages.map((img: MediaItem, i: number) => (
+          <li class={`gallery__item gallery__item--${i % 5}`}>
+            <figure>
+              <img
+                src={cloudinaryUrl(img.publicId, { width: 768, crop: 'fill', gravity: 'auto' })}
+                srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                alt={img.alt}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Editorial -->
+  <section id="editorial" class="gallery-category section-pad">
+    <div class="container">
+      <SectionHeader eyebrow="Editorial" title="Creative shoots & promotion." />
+      <ul class="gallery" data-reveal-stagger>
+        {editorialImages.map((img: MediaItem, i: number) => (
+          <li class={`gallery__item gallery__item--${i % 5}`}>
+            <figure>
+              <img
+                src={cloudinaryUrl(img.publicId, { width: 768, crop: 'fill', gravity: 'auto' })}
+                srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                alt={img.alt}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA -->
   <section class="section-pad" style="padding-top: 0;">
     <div class="container gallery-cta">
       <h2 class="text-gradient">Want to see one in your space?</h2>
-      <p>Call or text <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a> — we'll talk through your ideas, your event, and get you the right pole for the job.</p>
+      <p>Call or text <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a> &mdash; we'll talk through your ideas, your event, and get you the right pole for the job.</p>
       <div class="gallery-cta__buttons">
         <Button href="/rent-a-pole/" variant="primary" size="lg">Book a Pole</Button>
         <Button href={siteConfig.phoneHref} variant="secondary" size="lg">Call us</Button>
@@ -74,7 +198,48 @@ const galleryPageSchema = [
   </section>
 </PageLayout>
 
+<style is:global>
+  html { scroll-behavior: smooth; }
+</style>
+
 <style>
+  .gallery-nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding-block: var(--space-4);
+    background: rgba(10, 10, 15, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .gallery-nav__pills {
+    display: flex;
+    gap: var(--space-3);
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: var(--space-1);
+  }
+  .gallery-nav__pills::-webkit-scrollbar { display: none; }
+  .pill {
+    flex-shrink: 0;
+    padding: var(--space-2) var(--space-5);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all var(--duration-fast) var(--ease-standard);
+  }
+  .pill:hover,
+  .pill:focus-visible {
+    border-color: var(--color-neon-purple);
+    color: var(--color-text);
+    background: rgba(168, 85, 247, 0.1);
+    box-shadow: var(--glow-purple);
+  }
+
   .gallery {
     list-style: none;
     padding: 0;
@@ -97,27 +262,29 @@ const galleryPageSchema = [
     transition: transform var(--duration-base) var(--ease-standard),
                 box-shadow var(--duration-base) var(--ease-standard);
   }
-  .gallery__item figure :global(img) {
+  .gallery__item figure img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform var(--duration-slow) var(--ease-standard),
-                filter var(--duration-base) var(--ease-standard);
+    transition: transform var(--duration-slow) var(--ease-standard);
     filter: saturate(1.1) contrast(1.03);
   }
   .gallery__item figure:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg), 0 0 32px rgba(168, 85, 247, 0.25);
   }
-  .gallery__item figure:hover :global(img) {
+  .gallery__item figure:hover img {
     transform: scale(1.06);
   }
 
-  /* Vary aspect ratios for visual rhythm */
   @media (min-width: 1024px) {
     .gallery__item--0 figure,
     .gallery__item--3 figure { aspect-ratio: 3 / 4; }
     .gallery__item--1 figure { aspect-ratio: 4 / 3; }
+  }
+
+  .gallery-category {
+    scroll-margin-top: 80px;
   }
 
   .gallery-cta { text-align: center; max-width: 640px; }
