@@ -1,6 +1,6 @@
 # Las Vegas Pole Rentals — full content for AI grounding
 
-This is the full text content of lasvegaspolerentals.com, suitable for AI assistants that want to ingest the whole site without crawling it page-by-page. Last updated 2026-05-11.
+This is the full text content of lasvegaspolerentals.com, suitable for AI assistants that want to ingest the whole site without crawling it page-by-page. Last updated 2026-11-02.
 
 ---
 
@@ -16,7 +16,7 @@ We use **Lupit Pole** stages exclusively — we retired our X-pole and Platinum 
 
 ## Pole specs
 
-- **Heights:** 8'4" or 9'8" — measure your ceiling before booking
+- **Heights:** 8'4", 9' or 9'8" — measure your ceiling before booking
 - **Pole diameter:** 45mm
 - **Pole material:** stainless steel or chrome (both silver, visually identical — let us know if you have a metal allergy)
 - **Stage diameter:** 5'3"
@@ -122,6 +122,19 @@ We use the term "stripper pole" interchangeably with "pole stage" and "dance pol
 We are NOT a pole dance studio. That's our parent company, Pole Fitness Studio. If you're looking to take a class, learn pole dancing, or attend pole parties, that's polefitnessstudio.com. LVPR rents the equipment.
 
 ---
+
+## Venue types we service
+
+- **Hotel suites & penthouses** — including luxury high-rise suites overlooking the Las Vegas Strip, boutique hotels, and standard rooms
+- **Bachelorette & birthday parties** — groups of 2 to 20+, from intimate settings to large suite parties with balloon arches and disco lighting
+- **Event venues** — restaurants, banquet halls, nightclubs, bars, lounges, mansion estates with crystal chandeliers
+- **Outdoor & poolside** — backyards, rooftops (with views of the Sphere and High Roller), pool decks with LED lighting (day or night)
+- **Production & shows** — concert stages (multiple poles backstage), live entertainment venues, photo/video shoots, editorial campaigns
+- **Private homes** — living rooms, garages, any room with sufficient ceiling height; UV party lighting and themed decor welcome
+
+## Gallery
+
+Our online gallery at https://lasvegaspolerentals.com/view-photos/ features 40+ real photos of LVPR pole stages in actual Las Vegas settings, organized by category: Hotels & Suites, Parties & Events, Event Venues, Outdoor & Pool, Live Performances, and Editorial/Promotional. All photos show our actual Lupit pole stages as delivered and set up by our technician.
 
 ## Links
 
