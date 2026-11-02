@@ -53,8 +53,8 @@ const marqueeRow2 = [
   'Photo_Mar_13_2025_6_25_19_PM',
   'Photo_May_04_2024_7_16_23_PM',
   'Photo_Sep_08_2023_1_23_52_PM',
-  'Photo_Oct_21_2026_8_28_37_PM',
-  'Photo_Oct_21_2026_8_19_22_PM',
+  'Photo_Nov_30_2023_6_25_04_PM',
+  'Photo_Mar_16_2024_7_28_06_AM',
   'Photo_Jan_24_2026_6_10_30_PM',
   'Photo_May_11_2021_12_07_48_PM',
   'TASTE_34',
@@ -69,14 +69,14 @@ function altFor(publicId: string) {
   title={`Rent a Stripper Pole in Las Vegas | ${siteConfig.name}`}
   description={siteConfig.description}
   schema={homeSchema}
-  preloadImage={cloudinaryUrl('Photo_Jul_03_2024_4_26_07_PM', { width: 1280 })}
+  preloadImage={cloudinaryUrl('Photo_Mar_13_2025_6_25_19_PM', { width: 1280 })}
 >
   <!-- Hero -->
   <section class="hero hero--full">
     <div class="hero__media" aria-hidden="true">
       <img
-        src={cloudinaryUrl('Photo_Jul_03_2024_4_26_07_PM', { width: 1920 })}
-        srcset={cloudinarySrcset('Photo_Jul_03_2024_4_26_07_PM', [768, 1280, 1920, 2400])}
+        src={cloudinaryUrl('Photo_Mar_13_2025_6_25_19_PM', { width: 1920 })}
+        srcset={cloudinarySrcset('Photo_Mar_13_2025_6_25_19_PM', [768, 1280, 1920, 2400])}
         sizes="100vw"
         alt=""
         loading="eager"
@@ -111,12 +111,12 @@ function altFor(publicId: string) {
       <div class="hero__aside">
         <div class="hero-card hero-card--primary">
           <img
-            src={cloudinaryUrl('Photo_Mar_13_2025_6_25_19_PM', { width: 480, height: 640, crop: 'fill', gravity: 'auto' })}
-            srcset={`${cloudinaryUrl('Photo_Mar_13_2025_6_25_19_PM', { width: 320, height: 427, crop: 'fill', gravity: 'auto' })} 320w, ${cloudinaryUrl('Photo_Mar_13_2025_6_25_19_PM', { width: 480, height: 640, crop: 'fill', gravity: 'auto' })} 480w`}
+            src={cloudinaryUrl('Photo_Jul_23_2025_9_55_18_PM', { width: 480, height: 640, crop: 'fill', gravity: 'auto' })}
+            srcset={`${cloudinaryUrl('Photo_Jul_23_2025_9_55_18_PM', { width: 320, height: 427, crop: 'fill', gravity: 'auto' })} 320w, ${cloudinaryUrl('Photo_Jul_23_2025_9_55_18_PM', { width: 480, height: 640, crop: 'fill', gravity: 'auto' })} 480w`}
             sizes="280px"
             width="480"
             height="640"
-            alt="Performer on a rented pole in a luxury penthouse with panoramic Strip views"
+            alt="Pole performance at an elegant venue with pink and purple lighting"
             loading="eager"
             decoding="async"
           />
@@ -164,7 +164,7 @@ function altFor(publicId: string) {
           <img
             src={cloudinaryUrl(v.publicId, { width: 600, height: 400, crop: 'fill', gravity: 'auto' })}
             srcset={`${cloudinaryUrl(v.publicId, { width: 400, height: 267, crop: 'fill', gravity: 'auto' })} 400w, ${cloudinaryUrl(v.publicId, { width: 600, height: 400, crop: 'fill', gravity: 'auto' })} 600w, ${cloudinaryUrl(v.publicId, { width: 800, height: 533, crop: 'fill', gravity: 'auto' })} 800w`}
-            sizes="(min-width: 768px) 50vw, 100vw"
+            sizes="(min-width: 900px) 25vw, (min-width: 640px) 50vw, 100vw"
             width="600"
             height="400"
             alt={v.alt}
@@ -205,9 +205,7 @@ function altFor(publicId: string) {
       {marqueeRow1.map((id) => (
         <figure class="home-gallery-photo">
           <img
-            src={cloudinaryUrl(id, { width: 480, height: 360, crop: 'fill', gravity: 'auto' })}
-            width="480"
-            height="360"
+            src={`https://res.cloudinary.com/wb2a64ho/image/upload/h_360,c_scale,q_auto,f_auto/${id}.jpg`}
             alt={altFor(id)}
             loading="lazy"
             decoding="async"
@@ -220,9 +218,7 @@ function altFor(publicId: string) {
       {marqueeRow2.map((id) => (
         <figure class="home-gallery-photo">
           <img
-            src={cloudinaryUrl(id, { width: 480, height: 360, crop: 'fill', gravity: 'auto' })}
-            width="480"
-            height="360"
+            src={`https://res.cloudinary.com/wb2a64ho/image/upload/h_360,c_scale,q_auto,f_auto/${id}.jpg`}
             alt={altFor(id)}
             loading="lazy"
             decoding="async"
@@ -540,8 +536,11 @@ function altFor(publicId: string) {
     gap: var(--space-5);
     margin-top: var(--space-10);
   }
-  @media (min-width: 768px) {
+  @media (min-width: 640px) {
     .venue-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 900px) {
+    .venue-grid { grid-template-columns: repeat(4, 1fr); }
   }
   .venue-card {
     position: relative;
@@ -636,8 +635,8 @@ function altFor(publicId: string) {
 
   /* ── Gallery marquee ────────────────────────────────────────────────── */
   .home-gallery-photo {
-    width: 320px;
-    aspect-ratio: 4/3;
+    height: 320px;
+    flex-shrink: 0;
     margin: 0;
     border-radius: var(--radius-lg);
     overflow: hidden;
@@ -645,9 +644,9 @@ function altFor(publicId: string) {
     box-shadow: var(--shadow-md);
   }
   .home-gallery-photo img {
-    width: 100%;
     height: 100%;
-    object-fit: cover;
+    width: auto;
+    display: block;
     transition: transform var(--duration-base) var(--ease-standard);
   }
   .home-gallery-photo:hover img { transform: scale(1.05); }

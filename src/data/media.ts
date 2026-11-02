@@ -102,8 +102,8 @@ export const videos = [
   { publicId: 'Video_Aug_05_2020_9_09_26_PM', alt: 'Pole stage rental setup video' },
 ];
 
-export const heroImage = images.find((i) => i.publicId === 'Photo_Jul_03_2024_4_26_07_PM')!;
-export const heroPerformer = images.find((i) => i.publicId === 'Photo_Mar_13_2025_6_25_19_PM')!;
+export const heroImage = images.find((i) => i.publicId === 'Photo_Mar_13_2025_6_25_19_PM')!;
+export const heroPerformer = images.find((i) => i.publicId === 'Photo_Jul_23_2025_9_55_18_PM')!;
 
 export function byCategory(cat: MediaItem['category']) {
   return images.filter((i) => i.category === cat);
