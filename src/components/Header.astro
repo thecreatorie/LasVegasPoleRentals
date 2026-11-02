@@ -61,22 +61,25 @@ import { siteConfig } from '../site.config';
     text-shadow: var(--glow-purple);
   }
   .logo__icon {
-    width: 44px;
-    height: 44px;
+    width: 68px;
+    height: 68px;
     object-fit: contain;
     flex-shrink: 0;
+    -webkit-mask-image: radial-gradient(circle, #000 45%, transparent 72%);
+    mask-image: radial-gradient(circle, #000 45%, transparent 72%);
   }
   .wordmark {
     font-family: var(--font-display);
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: var(--fw-bold);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.14em;
     line-height: 1.15;
+    text-transform: uppercase;
     transition: text-shadow var(--duration-base) var(--ease-standard);
   }
   @media (max-width: 479px) {
-    .wordmark { font-size: 0.85rem; }
-    .logo__icon { width: 36px; height: 36px; }
+    .wordmark { font-size: 0.75rem; }
+    .logo__icon { width: 52px; height: 52px; }
   }
 
   .header-cta {
