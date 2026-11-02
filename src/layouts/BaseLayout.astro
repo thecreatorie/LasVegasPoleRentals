@@ -24,6 +24,8 @@ export interface Props {
   schema?: object | object[];
   /** Hides the sticky phone CTA on pages where the user is mid-conversion (contact form). */
   hideStickyCta?: boolean;
+  /** URL of the hero/LCP image to preload for faster paint. */
+  preloadImage?: string;
 }
 
 const {
@@ -35,6 +37,7 @@ const {
   noindex = false,
   schema,
   hideStickyCta = false,
+  preloadImage,
 } = Astro.props;
 
 const siteSchema = {
@@ -98,6 +101,7 @@ const siteSchema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={new URL(ogImage, Astro.url).toString()} />
 
+    {preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />

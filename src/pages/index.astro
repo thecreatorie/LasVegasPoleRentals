@@ -69,6 +69,7 @@ function altFor(publicId: string) {
   title={`Rent a Stripper Pole in Las Vegas | ${siteConfig.name}`}
   description={siteConfig.description}
   schema={homeSchema}
+  preloadImage={cloudinaryUrl('Photo_Jul_03_2024_4_26_07_PM', { width: 1280 })}
 >
   <!-- Hero -->
   <section class="hero hero--full">
@@ -113,6 +114,8 @@ function altFor(publicId: string) {
             src={cloudinaryUrl('Photo_Mar_13_2025_6_25_19_PM', { width: 480, height: 640, crop: 'fill', gravity: 'auto' })}
             srcset={`${cloudinaryUrl('Photo_Mar_13_2025_6_25_19_PM', { width: 320, height: 427, crop: 'fill', gravity: 'auto' })} 320w, ${cloudinaryUrl('Photo_Mar_13_2025_6_25_19_PM', { width: 480, height: 640, crop: 'fill', gravity: 'auto' })} 480w`}
             sizes="280px"
+            width="480"
+            height="640"
             alt="Performer on a rented pole in a luxury penthouse with panoramic Strip views"
             loading="eager"
             decoding="async"
@@ -123,6 +126,8 @@ function altFor(publicId: string) {
           <img
             src={cloudinaryUrl('Photo_Mar_24_2026_5_23_08_PM', { width: 320, height: 400, crop: 'fill', gravity: 'auto' })}
             sizes="140px"
+            width="320"
+            height="400"
             alt="Performer doing an inverted trick on a rooftop with the Las Vegas Sphere visible"
             loading="eager"
             decoding="async"
@@ -160,6 +165,8 @@ function altFor(publicId: string) {
             src={cloudinaryUrl(v.publicId, { width: 600, height: 400, crop: 'fill', gravity: 'auto' })}
             srcset={`${cloudinaryUrl(v.publicId, { width: 400, height: 267, crop: 'fill', gravity: 'auto' })} 400w, ${cloudinaryUrl(v.publicId, { width: 600, height: 400, crop: 'fill', gravity: 'auto' })} 600w, ${cloudinaryUrl(v.publicId, { width: 800, height: 533, crop: 'fill', gravity: 'auto' })} 800w`}
             sizes="(min-width: 768px) 50vw, 100vw"
+            width="600"
+            height="400"
             alt={v.alt}
             loading="lazy"
             decoding="async"
@@ -199,6 +206,8 @@ function altFor(publicId: string) {
         <figure class="home-gallery-photo">
           <img
             src={cloudinaryUrl(id, { width: 480, height: 360, crop: 'fill', gravity: 'auto' })}
+            width="480"
+            height="360"
             alt={altFor(id)}
             loading="lazy"
             decoding="async"
@@ -212,6 +221,8 @@ function altFor(publicId: string) {
         <figure class="home-gallery-photo">
           <img
             src={cloudinaryUrl(id, { width: 480, height: 360, crop: 'fill', gravity: 'auto' })}
+            width="480"
+            height="360"
             alt={altFor(id)}
             loading="lazy"
             decoding="async"
@@ -237,9 +248,11 @@ function altFor(publicId: string) {
     <div class="container teacher" data-reveal>
       <figure class="teacher__media">
         <img
-          src={cloudinaryUrl('Photo_Jul_23_2025_9_54_58_PM', { width: 720, crop: 'fill', gravity: 'auto' })}
-          srcset={`${cloudinaryUrl('Photo_Jul_23_2025_9_54_58_PM', { width: 480, crop: 'fill', gravity: 'auto' })} 480w, ${cloudinaryUrl('Photo_Jul_23_2025_9_54_58_PM', { width: 720, crop: 'fill', gravity: 'auto' })} 720w, ${cloudinaryUrl('Photo_Jul_23_2025_9_54_58_PM', { width: 960, crop: 'fill', gravity: 'auto' })} 960w`}
+          src={cloudinaryUrl('Photo_Jul_23_2025_9_54_58_PM', { width: 720, height: 960, crop: 'fill', gravity: 'auto' })}
+          srcset={`${cloudinaryUrl('Photo_Jul_23_2025_9_54_58_PM', { width: 480, height: 640, crop: 'fill', gravity: 'auto' })} 480w, ${cloudinaryUrl('Photo_Jul_23_2025_9_54_58_PM', { width: 720, height: 960, crop: 'fill', gravity: 'auto' })} 720w, ${cloudinaryUrl('Photo_Jul_23_2025_9_54_58_PM', { width: 960, height: 1280, crop: 'fill', gravity: 'auto' })} 960w`}
           sizes="(min-width: 900px) 460px, 100vw"
+          width="720"
+          height="960"
           alt="Group of performers around a pole at an upscale Las Vegas venue"
           loading="lazy"
           decoding="async"
