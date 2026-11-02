@@ -49,12 +49,19 @@ const { speed = 30, reverse = false, ariaLabel = 'Scrolling content' } = Astro.p
     width: max-content;
     gap: var(--space-5);
     animation: marquee-scroll var(--marquee-duration, 30s) linear infinite;
+    animation-play-state: paused;
     will-change: transform;
   }
+  .marquee__track.is-ready {
+    animation-play-state: running;
+  }
   .marquee__track--reverse { animation-direction: reverse; }
-  .marquee__track:hover,
-  .marquee__track:focus-within {
+  .marquee__track.is-ready:hover,
+  .marquee__track.is-ready:focus-within {
     animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track { animation-play-state: paused !important; }
   }
   .marquee__row {
     display: flex;
@@ -67,3 +74,23 @@ const { speed = 30, reverse = false, ariaLabel = 'Scrolling content' } = Astro.p
     to   { transform: translateX(calc(-50% - var(--space-5) / 2)); }
   }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.marquee').forEach((marquee) => {
+    const track = marquee.querySelector<HTMLElement>('.marquee__track');
+    if (!track) return;
+    const firstRow = track.querySelector('[data-marquee-row]');
+    if (!firstRow) { track.classList.add('is-ready'); return; }
+    const imgs = firstRow.querySelectorAll<HTMLImageElement>('img');
+    if (imgs.length === 0) { track.classList.add('is-ready'); return; }
+    let loaded = 0;
+    const check = () => { if (++loaded >= imgs.length) track.classList.add('is-ready'); };
+    imgs.forEach((img) => {
+      if (img.complete) check();
+      else {
+        img.addEventListener('load', check, { once: true });
+        img.addEventListener('error', check, { once: true });
+      }
+    });
+  });
+</script>
