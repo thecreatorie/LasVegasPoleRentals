@@ -102,8 +102,8 @@ const siteSchema = {
     <meta name="twitter:image" content={new URL(ogImage, Astro.url).toString()} />
 
     {preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/webp" href="/logo.webp" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
     <SchemaJsonLd schema={siteSchema} />
