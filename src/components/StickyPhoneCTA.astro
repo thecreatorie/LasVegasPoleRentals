@@ -9,12 +9,14 @@ import { siteConfig } from '../site.config';
 <aside class="sticky-cta" id="sticky-cta" aria-label="Quick contact">
   <div class="sticky-cta__inner">
     <a href={siteConfig.phoneHref} class="sticky-cta__phone" aria-label={`Call ${siteConfig.phoneDisplay}`}>
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <svg class="sticky-cta__phone-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"/>
       </svg>
       <span class="sticky-cta__phone-label">
         <span class="sticky-cta__lead">Call or text</span>
-        <strong>{siteConfig.phoneDisplay}</strong>
+        <svg class="sticky-cta__number" viewBox="0 0 156 24" aria-hidden="true" preserveAspectRatio="xMinYMid meet">
+          <text x="0" y="19">702-205-1440</text>
+        </svg>
       </span>
     </a>
     <a href="/rent-a-pole/" class="sticky-cta__book">Book a Pole</a>
@@ -38,6 +40,7 @@ import { siteConfig } from '../site.config';
   }
   .sticky-cta__inner {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--space-2);
     padding: var(--space-3);
     margin: 0 auto;
@@ -45,13 +48,16 @@ import { siteConfig } from '../site.config';
     background: color-mix(in oklab, var(--color-surface-raised) 92%, transparent);
     backdrop-filter: blur(16px);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-xl);
     box-shadow: var(--shadow-xl), var(--glow-purple);
     margin-block: 0 var(--space-4);
     margin-inline: var(--space-4);
   }
   @media (min-width: 640px) {
-    .sticky-cta__inner { margin-inline: auto; }
+    .sticky-cta__inner {
+      margin-inline: auto;
+      border-radius: var(--radius-full);
+    }
   }
 
   .sticky-cta__phone {
@@ -65,6 +71,7 @@ import { siteConfig } from '../site.config';
     background: none;
     border-radius: var(--radius-full);
     min-height: 44px;
+    min-width: 0;
     transition: color var(--duration-fast) var(--ease-standard);
   }
   .sticky-cta__phone:hover,
@@ -75,28 +82,42 @@ import { siteConfig } from '../site.config';
     flex-shrink: 0;
     color: var(--color-neon-cyan);
   }
+  .sticky-cta__phone-icon {
+    flex-shrink: 0;
+  }
   .sticky-cta__phone-label {
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
     line-height: 1.2;
+    flex: 1 1 0%;
+    min-width: 0;
   }
   .sticky-cta__lead {
     font-size: var(--fs-xs);
     text-transform: uppercase;
     letter-spacing: var(--tracking-widest);
     color: var(--color-text-muted);
+    white-space: nowrap;
   }
-  .sticky-cta__phone strong {
+  .sticky-cta__number {
+    display: block;
+    width: 100%;
+    max-width: 156px;
+    height: auto;
+  }
+  .sticky-cta__number text {
     font-family: var(--font-display);
-    font-size: var(--fs-base);
-    font-weight: var(--fw-bold);
+    font-weight: 700;
+    font-size: 19px;
+    fill: currentColor;
   }
 
   .sticky-cta__book {
     flex: 0 0 auto;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     padding: var(--space-3) var(--space-5);
     background: var(--gradient-button);
     color: #fff;
@@ -106,6 +127,7 @@ import { siteConfig } from '../site.config';
     font-weight: var(--fw-bold);
     font-size: var(--fs-sm);
     letter-spacing: var(--tracking-wide);
+    white-space: nowrap;
     min-height: 44px;
     transition: transform var(--duration-fast) var(--ease-spring),
                 box-shadow var(--duration-fast) var(--ease-standard);
