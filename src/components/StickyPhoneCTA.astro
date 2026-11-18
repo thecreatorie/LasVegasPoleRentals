@@ -40,15 +40,15 @@ import { siteConfig } from '../site.config';
   }
   .sticky-cta__inner {
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
     gap: var(--space-2);
-    padding: var(--space-3);
+    padding: var(--space-2) var(--space-3);
     margin: 0 auto;
     max-width: 640px;
     background: color-mix(in oklab, var(--color-surface-raised) 92%, transparent);
     backdrop-filter: blur(16px);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-full);
     box-shadow: var(--shadow-xl), var(--glow-purple);
     margin-block: 0 var(--space-4);
     margin-inline: var(--space-4);
@@ -56,16 +56,15 @@ import { siteConfig } from '../site.config';
   @media (min-width: 640px) {
     .sticky-cta__inner {
       margin-inline: auto;
-      border-radius: var(--radius-full);
     }
   }
 
   .sticky-cta__phone {
-    flex: 1 1 auto;
+    flex: 1 1 0%;
     display: inline-flex;
     align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-3) var(--space-4);
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
     color: var(--color-ink);
     text-decoration: none;
     background: none;
@@ -118,7 +117,7 @@ import { siteConfig } from '../site.config';
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-3) var(--space-5);
+    padding: var(--space-2) var(--space-4);
     background: var(--gradient-button);
     color: #fff;
     text-decoration: none;
