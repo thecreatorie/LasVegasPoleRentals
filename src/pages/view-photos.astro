@@ -1,18 +1,22 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import Button from '../components/Button.astro';
-import SectionHeader from '../components/SectionHeader.astro';
 import { siteConfig } from '../site.config';
 import { breadcrumbList } from '../lib/breadcrumbs';
-import { cloudinaryUrl, cloudinarySrcset, byCategory } from '../data/media';
+import { cloudinaryUrl, cloudinarySrcset, images } from '../data/media';
 import type { MediaItem } from '../data/media';
 
-const hotelImages = [...byCategory('hero'), ...byCategory('hotel')];
-const partyImages = byCategory('party');
-const venueImages = byCategory('venue');
-const outdoorImages = byCategory('outdoor');
-const performanceImages = byCategory('performance');
-const editorialImages = [...byCategory('editorial'), ...byCategory('production')];
+const seen = new Set<string>();
+const allImages: MediaItem[] = [];
+const sorted = [...images.filter(i => i.featured), ...images.filter(i => !i.featured)];
+for (const img of sorted) {
+  if (!seen.has(img.publicId)) {
+    seen.add(img.publicId);
+    allImages.push(img);
+  }
+}
+
+const INITIAL_COUNT = 18;
 
 const galleryPageSchema = [
   {
@@ -34,154 +38,32 @@ const galleryPageSchema = [
   intro="Hotel suites, event venues, private homes, rooftops, pool parties — anywhere in the Las Vegas Valley. All photos are real LVPR setups."
   schema={galleryPageSchema}
 >
-  <nav class="gallery-nav" aria-label="Gallery categories">
+  <section class="section-pad">
     <div class="container">
-      <div class="gallery-nav__pills">
-        <a href="#hotels" class="pill">Hotels</a>
-        <a href="#parties" class="pill">Parties &amp; Events</a>
-        <a href="#venues" class="pill">Venues</a>
-        <a href="#outdoor" class="pill">Outdoor</a>
-        <a href="#performances" class="pill">Performances</a>
-        <a href="#editorial" class="pill">Editorial</a>
+      <ul class="gallery" id="gallery">
+        {allImages.map((img, i) => (
+          <li class={`gallery__item${i >= INITIAL_COUNT ? ' gallery__item--hidden' : ''}`}>
+            <figure>
+              <img
+                src={cloudinaryUrl(img.publicId, { width: 768 })}
+                srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                alt={img.alt}
+                loading={i < 6 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+            </figure>
+          </li>
+        ))}
+      </ul>
+
+      <div class="gallery-load-more" id="load-more-wrap">
+        <button class="load-more-btn" id="load-more-btn" type="button">
+          Load More Photos
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <span class="gallery-count" id="gallery-count"></span>
       </div>
-    </div>
-  </nav>
-
-  <!-- Hotels -->
-  <section id="hotels" class="gallery-category section-pad">
-    <div class="container">
-      <SectionHeader eyebrow="Hotels" title="Luxury suites & high-rises." />
-      <ul class="gallery" data-reveal-stagger>
-        {hotelImages.map((img: MediaItem) => (
-          <li class="gallery__item">
-            <figure>
-              <img
-                src={cloudinaryUrl(img.publicId, { width: 768 })}
-                srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                alt={img.alt}
-                loading="lazy"
-                decoding="async"
-              />
-            </figure>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-  <!-- Parties & Events -->
-  <section id="parties" class="gallery-category section-pad">
-    <div class="container">
-      <SectionHeader eyebrow="Parties" title="Celebrations of every kind." />
-      <ul class="gallery" data-reveal-stagger>
-        {partyImages.map((img: MediaItem) => (
-          <li class="gallery__item">
-            <figure>
-              <img
-                src={cloudinaryUrl(img.publicId, { width: 768 })}
-                srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                alt={img.alt}
-                loading="lazy"
-                decoding="async"
-              />
-            </figure>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-  <!-- Venues -->
-  <section id="venues" class="gallery-category section-pad">
-    <div class="container">
-      <SectionHeader eyebrow="Venues" title="Clubs, restaurants & event spaces." />
-      <ul class="gallery" data-reveal-stagger>
-        {venueImages.map((img: MediaItem) => (
-          <li class="gallery__item">
-            <figure>
-              <img
-                src={cloudinaryUrl(img.publicId, { width: 768 })}
-                srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                alt={img.alt}
-                loading="lazy"
-                decoding="async"
-              />
-            </figure>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-  <!-- Outdoor -->
-  <section id="outdoor" class="gallery-category section-pad">
-    <div class="container">
-      <SectionHeader eyebrow="Outdoor" title="Rooftops, pools & open sky." />
-      <ul class="gallery" data-reveal-stagger>
-        {outdoorImages.map((img: MediaItem) => (
-          <li class="gallery__item">
-            <figure>
-              <img
-                src={cloudinaryUrl(img.publicId, { width: 768 })}
-                srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                alt={img.alt}
-                loading="lazy"
-                decoding="async"
-              />
-            </figure>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-  <!-- Performances -->
-  <section id="performances" class="gallery-category section-pad">
-    <div class="container">
-      <SectionHeader eyebrow="Performances" title="Live shows & entertainment." />
-      <ul class="gallery" data-reveal-stagger>
-        {performanceImages.map((img: MediaItem) => (
-          <li class="gallery__item">
-            <figure>
-              <img
-                src={cloudinaryUrl(img.publicId, { width: 768 })}
-                srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                alt={img.alt}
-                loading="lazy"
-                decoding="async"
-              />
-            </figure>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-  <!-- Editorial -->
-  <section id="editorial" class="gallery-category section-pad">
-    <div class="container">
-      <SectionHeader eyebrow="Editorial" title="Creative shoots & promotion." />
-      <ul class="gallery" data-reveal-stagger>
-        {editorialImages.map((img: MediaItem) => (
-          <li class="gallery__item">
-            <figure>
-              <img
-                src={cloudinaryUrl(img.publicId, { width: 768 })}
-                srcset={cloudinarySrcset(img.publicId, [480, 768, 1280])}
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                alt={img.alt}
-                loading="lazy"
-                decoding="async"
-              />
-            </figure>
-          </li>
-        ))}
-      </ul>
     </div>
   </section>
 
@@ -198,48 +80,7 @@ const galleryPageSchema = [
   </section>
 </PageLayout>
 
-<style is:global>
-  html { scroll-behavior: smooth; }
-</style>
-
 <style>
-  .gallery-nav {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    padding-block: var(--space-4);
-    background: rgba(10, 10, 15, 0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--color-border-subtle);
-  }
-  .gallery-nav__pills {
-    display: flex;
-    gap: var(--space-3);
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding-bottom: var(--space-1);
-  }
-  .gallery-nav__pills::-webkit-scrollbar { display: none; }
-  .pill {
-    flex-shrink: 0;
-    padding: var(--space-2) var(--space-5);
-    border-radius: var(--radius-full);
-    border: 1px solid var(--color-border);
-    color: var(--color-text-muted);
-    font-size: var(--fs-sm);
-    font-weight: var(--fw-medium);
-    text-decoration: none;
-    white-space: nowrap;
-    transition: all var(--duration-fast) var(--ease-standard);
-  }
-  .pill:hover,
-  .pill:focus-visible {
-    border-color: var(--color-neon-purple);
-    color: var(--color-text);
-    background: rgba(168, 85, 247, 0.1);
-    box-shadow: var(--glow-purple);
-  }
-
   .gallery {
     list-style: none;
     padding: 0;
@@ -254,6 +95,7 @@ const galleryPageSchema = [
     break-inside: avoid;
     margin-bottom: var(--space-4);
   }
+  .gallery__item--hidden { display: none; }
 
   .gallery__item figure {
     margin: 0;
@@ -280,8 +122,37 @@ const galleryPageSchema = [
     transform: scale(1.06);
   }
 
-  .gallery-category {
-    scroll-margin-top: 80px;
+  .gallery-load-more {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-10);
+  }
+  .load-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--gradient-button);
+    color: #fff;
+    padding: var(--space-4) var(--space-8);
+    border: none;
+    border-radius: var(--radius-full);
+    font-family: inherit;
+    font-size: var(--fs-base);
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+    transition: transform var(--duration-fast) var(--ease-standard),
+                box-shadow var(--duration-fast) var(--ease-standard);
+  }
+  .load-more-btn:hover,
+  .load-more-btn:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: var(--glow-purple);
+  }
+  .gallery-count {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
   }
 
   .gallery-cta { text-align: center; max-width: 640px; }
@@ -298,3 +169,27 @@ const galleryPageSchema = [
     justify-content: center;
   }
 </style>
+
+<script>
+  const gallery = document.getElementById('gallery');
+  const btn = document.getElementById('load-more-btn');
+  const wrap = document.getElementById('load-more-wrap');
+  const countEl = document.getElementById('gallery-count');
+
+  if (gallery && btn && wrap && countEl) {
+    const hidden = gallery.querySelectorAll('.gallery__item--hidden');
+    const total = gallery.querySelectorAll('.gallery__item').length;
+    const visible = total - hidden.length;
+
+    if (hidden.length === 0) {
+      wrap.style.display = 'none';
+    } else {
+      countEl.textContent = `Showing ${visible} of ${total} photos`;
+    }
+
+    btn.addEventListener('click', () => {
+      hidden.forEach((el) => el.classList.remove('gallery__item--hidden'));
+      wrap.style.display = 'none';
+    });
+  }
+</script>
